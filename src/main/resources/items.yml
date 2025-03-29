@@ -1,0 +1,23 @@
+items:
+  Sword:
+    Material: DIAMOND_SWORD
+    Name: '&6Sword'
+    Lore:
+      - '&7This is a sword'
+    Amont: 1
+    Dropable: true
+    KeepOnDeath: true
+    DropPlayerHead: true
+    Indestructible: true
+    Enchantments_On_Equip:
+      - 'DAMAGE_ALL:1'
+      - 'DURABILITY:3'
+    Full_Set_Bonus:
+      - 'DAMAGE_ALL:1'
+      - 'DURABILITY:3'
+    Enchantments_Associated:
+      - 'DAMAGE_ALL:1'
+      - 'DURABILITY:3'
+    Commands_On_Equip:
+      - 'say Hello'
+      - 'give %player% diamond 1'
