@@ -54,7 +54,7 @@ public class ItemCommand implements CommandExecutor {
         if(!ItemManager.isItemExist(itemName)){
             player.sendMessage("§cItem not found");
         } else {
-            player.getInventory().addItem(ItemManager.createItem(itemName, amount));
+            player.getInventory().addItem(ItemManager.createItem(player, itemName, amount));
         }
     }
 }
