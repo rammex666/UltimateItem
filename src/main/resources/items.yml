@@ -1,9 +1,10 @@
 items:
-  Sword:
-    Material: DIAMOND_SWORD
-    Name: '&6Sword'
+  headOfFire:
+    Material: DIAMOND_HELMET
+    Name: '&6Fire Helmet'
+    fullSet: 'FireSet'
     Lore:
-      - '&7This is a sword'
+      - '&7This is a legendary helmet'
     Amont: 1
     Dropable: true
     KeepOnDeath: true

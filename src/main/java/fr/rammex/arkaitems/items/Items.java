@@ -7,6 +7,7 @@ import java.util.List;
 public class Items {
     private String id;
     private String name;
+    private String fullSetName;
     private Material material;
     private int amount;
     private boolean dropable;
@@ -19,9 +20,10 @@ public class Items {
     private List<String> enchantsAssociated;
     private List<String> commandsOnEvent;
 
-    public Items(String id, String name, Material material, int amount, boolean dropable, boolean keepOnDeath, boolean dropPlayerHead, boolean indestructible, List<String> lore, List<String> enchantsOnEquip, List<String> fullSetBonus, List<String> enchantsAssociated, List<String> commandsOnEvent) {
+    public Items(String id, String name, String fullSetName,Material material, int amount, boolean dropable, boolean keepOnDeath, boolean dropPlayerHead, boolean indestructible, List<String> lore, List<String> enchantsOnEquip, List<String> fullSetBonus, List<String> enchantsAssociated, List<String> commandsOnEvent) {
         this.id = id;
         this.name = name;
+        this.fullSetName = fullSetName;
         this.material = material;
         this.amount = amount;
         this.dropable = dropable;
@@ -41,6 +43,10 @@ public class Items {
 
     public String getName() {
         return name;
+    }
+
+    public String getFullSetName() {
+        return fullSetName;
     }
 
     public Material getMaterial() {

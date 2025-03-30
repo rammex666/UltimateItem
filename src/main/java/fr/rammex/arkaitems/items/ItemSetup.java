@@ -17,6 +17,10 @@ public class ItemSetup {
         for(String key : itemKeys){
             String id = key;
             String name = itemsConf.getString("items." + key + ".Name");
+            String fullSetName = itemsConf.getString("items." + key + ".fullSet");
+            if(fullSetName == null){
+                fullSetName = "none";
+            }
             Material material = Material.valueOf(itemsConf.getString("items." + key + ".Material"));
             if(material == null){
                 System.out.println("Material " + itemsConf.getString("items." + key + ".Material") + " not found");
@@ -38,7 +42,7 @@ public class ItemSetup {
             List<String> enchantsAssociated = itemsConf.getStringList("items." + key + ".Enchantments_Associated");
             List<String> commandsOnEvent = itemsConf.getStringList("items." + key + ".Commands_On_Equip");
 
-            Items item = new Items(id, name, material, amount, dropable, keepOnDeath, dropPlayerHead, indestructible, lore, enchantsOnEquip, fullSetBonus, enchantsAssociated, commandsOnEvent);
+            Items item = new Items(id, name, fullSetName, material, amount, dropable, keepOnDeath, dropPlayerHead, indestructible, lore, enchantsOnEquip, fullSetBonus, enchantsAssociated, commandsOnEvent);
             ItemManager.addItem(item);
         }
     }
