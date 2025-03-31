@@ -3,6 +3,7 @@ package fr.rammex.arkaitems;
 import fr.rammex.arkaitems.commands.ItemCommand;
 import fr.rammex.arkaitems.database.SQLiteManager;
 import fr.rammex.arkaitems.events.ItemListener;
+import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.ItemSetup;
 import fr.rammex.arkaitems.utils.YamlFiles;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,6 +35,9 @@ public final class ArkaItems extends JavaPlugin {
 
         //ITEMS
         ItemSetup.setupItems();
+
+        // LOAD MESSAGES
+        getLoadMessages();
     }
 
     @Override
@@ -47,5 +51,11 @@ public final class ArkaItems extends JavaPlugin {
 
     private void loadCommands(){
         getCommand("arkaitems").setExecutor(new ItemCommand());
+    }
+
+    private void getLoadMessages(){
+        getLogger().info("Plugin loaded !");
+        getLogger().info("Version: " + getDescription().getVersion());
+        getLogger().info(ItemManager.getItemCount() + " items loaded.");
     }
 }

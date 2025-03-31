@@ -31,6 +31,10 @@ public class ItemManager {
         itemsMap.clear();
     }
 
+    public static int getItemCount() {
+        return itemsMap.size();
+    }
+
     public static ItemStack createItem(Player player, String name, int amount) {
         Items item = getItemById(name);
         if (item == null) {
