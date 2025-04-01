@@ -24,37 +24,29 @@ import net.minecraft.server.v1_8_R3.NBTTagString;
 
 public class ItemMetadata {
 
-    public static org.bukkit.inventory.ItemStack setMetadata(org.bukkit.inventory.ItemStack item, String metadata, Object value){
-        return CraftItemStack.asBukkitCopy(setMetadata(CraftItemStack.asNMSCopy(item), metadata, value));
-    }
-
-    public static ItemStack setMetadata(ItemStack item, String metadata, Object value){
-        if(item.getTag() == null){
-            item.setTag(new NBTTagCompound());
+    public static org.bukkit.inventory.ItemStack setMetadata(org.bukkit.inventory.ItemStack item, String key, String value) {
+        ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+        if (nmsItem.getTag() == null) {
+            nmsItem.setTag(new NBTTagCompound());
         }
-        setTag(item.getTag(), metadata, value);
-        return item;
+        nmsItem.getTag().setString(key, value);
+        return CraftItemStack.asBukkitCopy(nmsItem);
     }
 
-    public static boolean hasMetadata(org.bukkit.inventory.ItemStack item, String metadata){
-        return hasMetadata(CraftItemStack.asNMSCopy(item), metadata);
+    public static boolean hasMetadata(org.bukkit.inventory.ItemStack item, String key) {
+        ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+        return nmsItem.getTag() != null && nmsItem.getTag().hasKey(key);
     }
 
-    public static boolean hasMetadata(ItemStack item, String metadata){
-        return item.getTag() == null ? false : item.getTag().hasKey(metadata);
-    }
-
-    public static Object getMetadata(org.bukkit.inventory.ItemStack item, String metadata){
-        return getMetadata(CraftItemStack.asNMSCopy(item), metadata);
-    }
-
-    public static Object getMetadata(ItemStack item, String metadata){
-        if(!hasMetadata(item, metadata))return null;
-        return getObject(item.getTag().get(metadata));
+    public static String getMetadata(org.bukkit.inventory.ItemStack item, String key) {
+        ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+        if (nmsItem.getTag() != null && nmsItem.getTag().hasKey(key)) {
+            return nmsItem.getTag().getString(key);
+        }
+        return null;
     }
 
     private static NBTTagCompound setTag(NBTTagCompound tag, String tagString, Object value) {
-
         NBTBase base = null;
 
         if (value instanceof Boolean) {
@@ -111,7 +103,7 @@ public class ItemMetadata {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if(list == null)return null;
+            if(list == null) return null;
             List<Object> toReturn = Lists.newArrayList();
             for(NBTBase base : list){
                 toReturn.add(getObject(base));
@@ -124,5 +116,4 @@ public class ItemMetadata {
         }
         return null;
     }
-
 }

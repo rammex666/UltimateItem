@@ -4,6 +4,7 @@ import fr.rammex.arkaitems.ArkaItems;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -53,11 +54,14 @@ public class ItemMetaDataManager {
 
     public static String getNextItemID(){
         try (Connection connection = getSQLConnection()) {
-            String query = "SELECT * FROM itemMetaData";
+            String query = "SELECT COUNT(*) AS count FROM itemMetaData";
             try (PreparedStatement ps = connection.prepareStatement(query)) {
-                ps.executeQuery();
-                SQLiteManager.close(ps, ps.getResultSet());
-                return String.valueOf(ps.getResultSet().getFetchSize() + 1);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        System.out.println(rs.getInt("count"));
+                        return String.valueOf(rs.getInt("count") + 1);
+                    }
+                }
             }
         } catch (SQLException ex) {
             ArkaItems.instance.getLogger().log(Level.SEVERE, "Unable to get next item ID", ex);

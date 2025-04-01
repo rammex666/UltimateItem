@@ -1,12 +1,15 @@
 package fr.rammex.arkaitems.commands;
 
 import fr.rammex.arkaitems.ArkaItems;
+import fr.rammex.arkaitems.database.ItemMetaDataManager;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.ItemSetup;
+import fr.rammex.arkaitems.utils.ItemMetadata;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class ItemCommand implements CommandExecutor {
     @Override
@@ -20,6 +23,9 @@ public class ItemCommand implements CommandExecutor {
             case "reload":
                 reload();
                 sender.sendMessage("§aConfig reloaded");
+                break;
+            case "getid":
+                getId((Player) sender);
                 break;
             case "give":
                 String target = args[1];
@@ -50,11 +56,24 @@ public class ItemCommand implements CommandExecutor {
         ItemSetup.setupItems();
     }
 
-    private void give(String itemName ,Player player, int amount){
-        if(!ItemManager.isItemExist(itemName)){
+    private void give(String itemName, Player player, int amount) {
+        if (!ItemManager.isItemExist(itemName)) {
             player.sendMessage("§cItem not found");
         } else {
-            player.getInventory().addItem(ItemManager.createItem(player, itemName, amount));
+            ItemStack item = ItemManager.createItem(player, itemName, amount);
+            if (item == null) {
+                player.sendMessage("§cItem not found");
+            } else {
+                player.getInventory().addItem(item);
+            }
+        }
+    }
+
+    private void getId(Player player){
+        if(!ItemMetadata.hasMetadata(player.getInventory().getItemInHand(), "ID")){
+            player.sendMessage("§cItem not found");
+        } else {
+            player.sendMessage("§aYour Item ID is: " + ItemMetadata.getMetadata(player.getInventory().getItemInHand(), "ID"));
         }
     }
 }

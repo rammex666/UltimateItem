@@ -38,23 +38,23 @@ public class ItemManager {
     public static ItemStack createItem(Player player, String name, int amount) {
         Items item = getItemById(name);
         if (item == null) {
+            player.sendMessage(ChatColor.RED + "Item with name " + name + " does not exist.");
             return null;
         }
         ItemStack itemStack = new ItemStack(item.getMaterial(), amount);
+        String id = ItemMetaDataManager.getNextItemID();
+        itemStack = ItemMetadata.setMetadata(itemStack, "ID", id);
+
+        // Vérifiez que les métadonnées ont été ajoutées
+        if (ItemMetadata.hasMetadata(itemStack, "ID")) {
+            player.sendMessage("§aItem given with ID: " + id);
+        } else {
+            player.sendMessage("§cFailed to set item metadata");
+        }
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', item.getName()));
         itemMeta.setLore(item.getLore());
         itemStack.setItemMeta(itemMeta);
-        if(!ItemMetadata.hasMetadata(itemStack, "ID") 
-            && !ItemMetaDataManager.isItemInTable(ItemMetadata.getMetadata(itemStack, "ID").toString()))
-        {
-                String id = ItemMetaDataManager.getNextItemID();
-                String ItemIDMeta = itemStack.getItemMeta().toString();
-                ItemMetadata.setMetadata(itemStack, "ID", id);
-                ItemMetaDataManager.insertNewOwnerItem(player.getUniqueId(), ItemIDMeta);
-                player.sendMessage(ChatColor.AQUA + ">> Added ID Metadata");
-            }
-
 
         return itemStack;
     }
