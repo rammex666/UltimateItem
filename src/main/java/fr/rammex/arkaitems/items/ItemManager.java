@@ -44,14 +44,6 @@ public class ItemManager {
         ItemStack itemStack = new ItemStack(item.getMaterial(), amount);
         String id = ItemMetaDataManager.getNextItemID();
         itemStack = ItemMetadata.setMetadata(itemStack, "ID", id);
-
-        // Vérifiez que les métadonnées ont été ajoutées
-        if (ItemMetadata.hasMetadata(itemStack, "ID")) {
-
-            player.sendMessage("§aItem given with ID: " + id);
-        } else {
-            player.sendMessage("§cFailed to set item metadata");
-        }
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', item.getName()));
         itemMeta.setLore(item.getLore());
