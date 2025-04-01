@@ -47,6 +47,7 @@ public class ItemManager {
 
         // Vérifiez que les métadonnées ont été ajoutées
         if (ItemMetadata.hasMetadata(itemStack, "ID")) {
+
             player.sendMessage("§aItem given with ID: " + id);
         } else {
             player.sendMessage("§cFailed to set item metadata");
@@ -55,6 +56,8 @@ public class ItemManager {
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', item.getName()));
         itemMeta.setLore(item.getLore());
         itemStack.setItemMeta(itemMeta);
+
+        ItemMetaDataManager.insertNewOwnerItem(player.getUniqueId(), itemMeta.toString());
 
         return itemStack;
     }

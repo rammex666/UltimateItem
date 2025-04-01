@@ -65,6 +65,7 @@ public class ItemCommand implements CommandExecutor {
                 player.sendMessage("§cItem not found");
             } else {
                 player.getInventory().addItem(item);
+
             }
         }
     }
