@@ -47,4 +47,5 @@ public class GUIListener implements Listener {
     private String getItemName(String name) {
         return name.replace("§", "&");
     }
+
 }

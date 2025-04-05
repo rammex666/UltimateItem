@@ -62,7 +62,7 @@ public class ItemManager {
         itemMeta.setLore(item.getLore());
         itemStack.setItemMeta(itemMeta);
 
-        ItemMetaDataManager.insertNewOwnerItem(player.getUniqueId(), itemMeta.toString());
+        ItemMetaDataManager.insertNewOwnerItem(player.getUniqueId(), "Item:"+item.getId());
 
         return itemStack;
     }

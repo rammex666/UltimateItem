@@ -1,6 +1,8 @@
 name: ArkaItems
 version: '${project.version}'
 main: fr.rammex.arkaitems.ArkaItems
+depend:
+  - ShopGUIPlus
 commands:
   arkaitems:
     description: Commande principale du plugin ArkaItems

@@ -6,6 +6,7 @@ import fr.rammex.arkaitems.events.GUIListener;
 import fr.rammex.arkaitems.events.ItemListener;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.ItemSetup;
+import fr.rammex.arkaitems.items.specialitems.sellstick.SellStickSetup;
 import fr.rammex.arkaitems.utils.YamlFiles;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -36,6 +37,7 @@ public final class ArkaItems extends JavaPlugin {
 
         //ITEMS
         ItemSetup.setupItems();
+        SellStickSetup.setupItems();
 
         // LOAD MESSAGES
         getLoadMessages();

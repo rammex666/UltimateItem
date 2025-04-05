@@ -1,3 +1,15 @@
+sellsticks:
+  x1:
+    Material: STICK
+    Name: '&6Sell Stick'
+    Lore:
+      - '&7Right click to sell items'
+    SellMultiplier: 1.0
+    Dropable: true
+    KeepOnDeath: true
+    Indestructible: true # if true, the item will not break so useless to put durability
+    Durability: 0
+
 items:
   headOfFire:
     Material: DIAMOND_HELMET
