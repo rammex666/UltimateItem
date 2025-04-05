@@ -2,6 +2,7 @@ package fr.rammex.arkaitems.commands;
 
 import fr.rammex.arkaitems.ArkaItems;
 import fr.rammex.arkaitems.database.ItemMetaDataManager;
+import fr.rammex.arkaitems.gui.ItemsGUI;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.ItemSetup;
 import fr.rammex.arkaitems.utils.ItemMetadata;
@@ -15,12 +16,16 @@ public class ItemCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
         if(args.length == 0){
-            sender.sendMessage("§c/arkaitem reload");
+            sender.sendMessage("§c/arkaitem <reload/give/menu>");
             return false;
         }
 
         switch (args[0]){
             case "reload":
+                if(!sender.hasPermission("arkaitems.admin")){
+                    sender.sendMessage("§cYou don't have permission to use this command");
+                    return false;
+                }
                 reload();
                 sender.sendMessage("§aConfig reloaded");
                 break;
@@ -34,6 +39,10 @@ public class ItemCommand implements CommandExecutor {
                     sender.sendMessage("§cPlayer not found");
                     return false;
                 }
+                if(!sender.hasPermission("arkaitems.admin")){
+                    sender.sendMessage("§cYou don't have permission to use this command");
+                    return false;
+                }
                 String itemName = args[2];
                 if(args.length == 3){
                     give(itemName, player, 1);
@@ -43,6 +52,18 @@ public class ItemCommand implements CommandExecutor {
                     give(itemName, player, amount);
                     return true;
                 }
+            case "menu":
+                if(!(sender instanceof Player)){
+                    sender.sendMessage("§cYou must be a player to use this command");
+                    return false;
+                }
+                if(!sender.hasPermission("arkaitems.menu")){
+                    sender.sendMessage("§cYou don't have permission to use this command");
+                    return false;
+                }
+                Player p = (Player) sender;
+                ItemsGUI.buildInventory(p);
+                break;
             default:
                 break;
         }

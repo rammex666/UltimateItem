@@ -2,6 +2,7 @@ package fr.rammex.arkaitems;
 
 import fr.rammex.arkaitems.commands.ItemCommand;
 import fr.rammex.arkaitems.database.SQLiteManager;
+import fr.rammex.arkaitems.events.GUIListener;
 import fr.rammex.arkaitems.events.ItemListener;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.ItemSetup;
@@ -46,7 +47,7 @@ public final class ArkaItems extends JavaPlugin {
     }
 
     private void loadEvents(){
-        getServer().getPluginManager().registerEvents(new ItemListener(), this);
+        getServer().getPluginManager().registerEvents(new GUIListener(), this);
     }
 
     private void loadCommands(){

@@ -19,8 +19,21 @@ public class ItemManager {
         itemsMap.put(item.getId(), item);
     }
 
+    public static Map<String, Items> getItems() {
+        return itemsMap;
+    }
+
     public static Items getItemById(String id) {
         return itemsMap.get(id);
+    }
+
+    public static Items getItemByName(String name) {
+        for (Items item : itemsMap.values()) {
+            if (item.getName().equalsIgnoreCase(name)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     public static boolean isItemExist(String id) {
