@@ -3,9 +3,9 @@ version: '${project.version}'
 main: fr.rammex.arkaitems.ArkaItems
 depend:
   - ShopGUIPlus
-  - Factions
 softdepend:
   - WorlGuard
+  - Factions
 commands:
   arkaitems:
     description: Commande principale du plugin ArkaItems
