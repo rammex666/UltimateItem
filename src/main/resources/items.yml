@@ -1,3 +1,19 @@
+
+auto_place_block:
+  obsidian_placer:
+    Material: OBSIDIAN
+    Name: '&6Obsidian Placer'
+    Lore:
+      - '&7Right click to place obsidian'
+    Dropable: true
+    KeepOnDeath: true
+    Indestructible: true # if true, the item will not break so useless to put durability
+    Durability: 0
+    from: 0 # y start
+    to: 256 # y end
+    getBlockFromInventory: false
+    blockTypeFromInventory: OBSIDIAN # if getBlockFromInventory is true, this will be the block type to place
+
 sellsticks:
   x1:
     Material: STICK

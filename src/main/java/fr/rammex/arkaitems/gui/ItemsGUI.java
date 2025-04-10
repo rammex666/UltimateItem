@@ -2,6 +2,8 @@ package fr.rammex.arkaitems.gui;
 
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
+import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlock;
+import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlockManager;
 import fr.rammex.arkaitems.items.specialitems.sellstick.SellStick;
 import fr.rammex.arkaitems.items.specialitems.sellstick.SellStickManager;
 import org.bukkit.Bukkit;
@@ -17,11 +19,10 @@ import java.util.Map;
 
 public class ItemsGUI {
 
-    public static void buildInventory(Player player){
+    public static void buildInventory(Player player) {
         Inventory inventory = Bukkit.createInventory(player, 54, "§8[§6ArkaItems§8]");
 
         List<ItemStack> items = new ArrayList<>();
-
         Map<String, Items> itemsMap = ItemManager.getItems();
 
         for (Map.Entry<String, Items> entry : itemsMap.entrySet()) {
@@ -40,7 +41,6 @@ public class ItemsGUI {
         }
 
         List<ItemStack> sellSticks = new ArrayList<>();
-
         Map<String, SellStick> sellStickMap = SellStickManager.getSellSticks();
 
         for (Map.Entry<String, SellStick> entry : sellStickMap.entrySet()) {
@@ -56,6 +56,24 @@ public class ItemsGUI {
 
         for (int i = 0; i < sellSticks.size(); i++) {
             inventory.setItem(i + items.size(), sellSticks.get(i));
+        }
+
+        List<ItemStack> autoPlaceBlock = new ArrayList<>();
+        Map<String, AutoPlaceBlock> autoPlaceBlockMap = AutoPlaceBlockManager.getItems();
+
+        for (Map.Entry<String, AutoPlaceBlock> entry : autoPlaceBlockMap.entrySet()) {
+            AutoPlaceBlock autoplaceblock = entry.getValue();
+            ItemStack itemStack = new ItemStack(autoplaceblock.getMaterial(), 1);
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', autoplaceblock.getName()));
+            itemMeta.setLore(autoplaceblock.getLore());
+            itemStack.setItemMeta(itemMeta);
+
+            autoPlaceBlock.add(itemStack);
+        }
+
+        for (int i = 0; i < autoPlaceBlock.size(); i++) {
+            inventory.setItem(i + items.size() + sellSticks.size(), autoPlaceBlock.get(i));
         }
 
         player.openInventory(inventory);

@@ -1,6 +1,5 @@
 package fr.rammex.arkaitems.events.sellstick;
 
-import fr.rammex.arkaitems.database.ItemMetaDataManager;
 import fr.rammex.arkaitems.items.specialitems.sellstick.SellStick;
 import fr.rammex.arkaitems.items.specialitems.sellstick.SellStickManager;
 import fr.rammex.arkaitems.utils.ItemMetadata;
@@ -8,7 +7,6 @@ import fr.rammex.arkaitems.utils.shopguiplus.ChestSellManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

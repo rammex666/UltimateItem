@@ -2,6 +2,8 @@ package fr.rammex.arkaitems.events;
 
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
+import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlock;
+import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlockManager;
 import fr.rammex.arkaitems.items.specialitems.sellstick.SellStick;
 import fr.rammex.arkaitems.items.specialitems.sellstick.SellStickManager;
 import org.bukkit.entity.Player;
@@ -43,7 +45,19 @@ public class GUIListener implements Listener {
                     } else {
                         event.getWhoClicked().sendMessage("Sell stick with name " + itemName + " does not exist.");
                     }
-                } else {
+                } else if (isAutoPlaceBlockWithName(getAutoPlaceBlockName(itemName))) {
+                    AutoPlaceBlock autoPlaceBlock = AutoPlaceBlockManager.getItemByName(getAutoPlaceBlockName(itemName));
+                    if (autoPlaceBlock != null) {
+                        ItemStack itemToGive = AutoPlaceBlockManager.createItem((Player) event.getWhoClicked(), autoPlaceBlock.getId(), 1);
+                        if (itemToGive != null) {
+                            event.getWhoClicked().getInventory().addItem(itemToGive);
+                        } else {
+                            event.getWhoClicked().sendMessage("Failed to create autoPlaceBlock.");
+                        }
+                    } else {
+                        event.getWhoClicked().sendMessage("autoPlaceBlock with name " + itemName + " does not exist.");
+                    }
+                }  else {
                     event.getWhoClicked().sendMessage("Item with name " + itemName + " does not exist.");
                 }
             }
@@ -72,6 +86,18 @@ public class GUIListener implements Listener {
     }
 
     private String getSellStickName(String name) {
+        return name.replace("§", "&");
+    }
+
+    private boolean isAutoPlaceBlockWithName(String name) {
+        if (AutoPlaceBlockManager.getItemByName(name) != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private String getAutoPlaceBlockName(String name) {
         return name.replace("§", "&");
     }
 }
