@@ -1,8 +1,16 @@
 package fr.rammex.arkaitems.events.autoplaceblock;
 
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.Flags;
 import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlock;
 import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlockManager;
 import fr.rammex.arkaitems.utils.ItemMetadata;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -105,15 +113,39 @@ public class AutoPlaceBlockListener implements Listener {
                     switch (cardinalDirection) {
                         case "NORTH":
                             targetLocation.add(0, 0, i);
+                            if(targetLocation.add(0, 0, i).getBlock().getType() != Material.AIR){
+                                continue;
+                            }
+                            if(checkFactionAndWorldGuard(player, targetLocation.add(0, 0, i))){
+                                continue;
+                            }
                             break;
                         case "SOUTH":
                             targetLocation.add(0, 0, -i);
+                            if(targetLocation.add(0, 0, -i).getBlock().getType() != Material.AIR){
+                                continue;
+                            }
+                            if(checkFactionAndWorldGuard(player, targetLocation.add(0, 0, -i))){
+                                continue;
+                            }
                             break;
                         case "EAST":
                             targetLocation.add(-i, 0, 0);
+                            if(targetLocation.add(-i, 0, 0).getBlock().getType() != Material.AIR){
+                                continue;
+                            }
+                            if (checkFactionAndWorldGuard(player, targetLocation.add(-i, 0, 0))){
+                                continue;
+                            }
                             break;
                         case "WEST":
                             targetLocation.add(i, 0, 0);
+                            if(targetLocation.add(i, 0, 0).getBlock().getType() != Material.AIR){
+                                continue;
+                            }
+                            if (checkFactionAndWorldGuard(player, targetLocation.add(i, 0, 0))){
+                                continue;
+                            }
                             break;
                     }
                 } else if ("y".equalsIgnoreCase(direction)) {
@@ -140,5 +172,34 @@ public class AutoPlaceBlockListener implements Listener {
         } else {
             return "WEST";
         }
+    }
+
+    private boolean checkFactionAndWorldGuard(Player player, Location location) {
+        // Vérification WorldGuard
+        if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+            com.sk89q.worldedit.util.Location weLocation = new com.sk89q.worldedit.util.Location(
+                    BukkitAdapter.adapt(location.getWorld()), location.getX(), location.getY(), location.getZ()
+            );
+            com.sk89q.worldguard.protection.ApplicableRegionSet regions = WorldGuard.getInstance()
+                    .getPlatform().getRegionContainer().createQuery().getApplicableRegions(weLocation);
+            if (!regions.testState(WorldGuardPlugin.inst().wrapPlayer(player), Flags.BUILD)) {
+                return true;
+            }
+        }
+
+        // Vérification FactionsUUID
+        if (Bukkit.getPluginManager().isPluginEnabled("Factions")) {
+            FPlayer fPlayer = com.massivecraft.factions.FPlayers.getInstance().getByPlayer(player);
+            Faction playerFaction = fPlayer.getFaction();
+            FLocation locationFLocation = new FLocation(location);
+            Faction locationFaction = com.massivecraft.factions.Board.getInstance()
+                    .getFactionAt(locationFLocation);
+
+            if (!playerFaction.equals(locationFaction) && !locationFaction.isWilderness()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
