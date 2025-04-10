@@ -4,8 +4,10 @@ import fr.rammex.arkaitems.commands.ItemCommand;
 import fr.rammex.arkaitems.database.SQLiteManager;
 import fr.rammex.arkaitems.events.GUIListener;
 import fr.rammex.arkaitems.events.ItemListener;
+import fr.rammex.arkaitems.events.sellstick.SellStickListener;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.ItemSetup;
+import fr.rammex.arkaitems.items.specialitems.sellstick.SellStickManager;
 import fr.rammex.arkaitems.items.specialitems.sellstick.SellStickSetup;
 import fr.rammex.arkaitems.utils.YamlFiles;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -50,6 +52,7 @@ public final class ArkaItems extends JavaPlugin {
 
     private void loadEvents(){
         getServer().getPluginManager().registerEvents(new GUIListener(), this);
+        getServer().getPluginManager().registerEvents(new SellStickListener(), this);
     }
 
     private void loadCommands(){
@@ -60,5 +63,6 @@ public final class ArkaItems extends JavaPlugin {
         getLogger().info("Plugin loaded !");
         getLogger().info("Version: " + getDescription().getVersion());
         getLogger().info(ItemManager.getItemCount() + " items loaded.");
+        getLogger().info("Sellsticks loaded: " + SellStickManager.getSellStickCount());
     }
 }

@@ -36,4 +36,14 @@ public class ItemMetadata {
         }
         return null;
     }
+
+    public static void removeMetadata(org.bukkit.inventory.ItemStack item, String key) {
+        if (item == null) {
+            return;
+        }
+        ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+        if (nmsItem != null && nmsItem.getTag() != null) {
+            nmsItem.getTag().remove(key);
+        }
+    }
 }

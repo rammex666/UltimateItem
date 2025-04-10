@@ -1,14 +1,20 @@
 package fr.rammex.arkaitems.events.sellstick;
 
+import fr.rammex.arkaitems.database.ItemMetaDataManager;
+import fr.rammex.arkaitems.items.specialitems.sellstick.SellStick;
 import fr.rammex.arkaitems.items.specialitems.sellstick.SellStickManager;
 import fr.rammex.arkaitems.utils.ItemMetadata;
 import fr.rammex.arkaitems.utils.shopguiplus.ChestSellManager;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class SellStickListener implements Listener {
 
@@ -22,7 +28,6 @@ public class SellStickListener implements Listener {
                 event.setCancelled(true);
                 Double sellAmount = Double.valueOf(ItemMetadata.getMetadata(event.getItem(), "Multiplier"));
                 if (sellAmount == null) {
-                    event.getPlayer().sendMessage("§cError: Sell amount is null.");
                     return;
                 }
                 Chest chest = (Chest) event.getClickedBlock().getState();
@@ -30,15 +35,15 @@ public class SellStickListener implements Listener {
                 ChestSellManager.sellChestContents(player, chest, sellAmount);
                 int sellStickDurability = Integer.valueOf(ItemMetadata.getMetadata(event.getItem(), "Durability"));
                 System.out.println("Durability: " + sellStickDurability);
-                if( sellStickDurability > 0) {
-                    System.out.println("Durability: " + sellStickDurability);
-                    ItemMetadata.setMetadata(event.getItem(), "Durability", String.valueOf(sellStickDurability - 1));
-                    event.getPlayer().sendMessage("§aDurabilité de la baguette de vente: " + (sellStickDurability - 1));
-                } else if (sellStickDurability-1 == 0){
-                    event.getPlayer().getInventory().remove(event.getItem());
-                    event.getPlayer().sendMessage("§cVotre baguette de vente est cassée.");
+                if (sellStickDurability > 0) {
+                    System.out.println("Durability > 0");
+                    SellStick sellStick = SellStickManager.getSellStickByName(getSellStickName(event.getItem().getItemMeta().getDisplayName()));
+                    updateSellStick(player, sellStick, ItemMetadata.getMetadata(event.getItem(), "ID"), sellStickDurability);
+                } else if (sellStickDurability - 1 == 0 || sellStickDurability == 0) {
+                    System.out.println("Durability: 0 destroying item");
+                    event.getPlayer().getInventory().setItem(event.getPlayer().getInventory().getHeldItemSlot(), null);
                 } else if (sellStickDurability == -1){
-                    System.out.println("Durability: " + sellStickDurability);
+                    System.out.println("Durability: -1");
                 }
             } else {
                 return;
@@ -56,5 +61,17 @@ public class SellStickListener implements Listener {
 
     private String getSellStickName(String name) {
         return name.replace("§", "&");
+    }
+
+    private void updateSellStick(Player player, SellStick sellStick, String id, int Durability) {
+        ItemStack itemStack = new ItemStack(sellStick.getMaterial(), 1);
+        itemStack = ItemMetadata.setMetadata(itemStack, "ID", id);
+        itemStack = ItemMetadata.setMetadata(itemStack, "Multiplier", String.valueOf(sellStick.getSellMultiplier()));
+        itemStack = ItemMetadata.setMetadata(itemStack, "Durability", String.valueOf(Durability-1));
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', sellStick.getName()));
+        itemMeta.setLore(sellStick.getLore());
+        itemStack.setItemMeta(itemMeta);
+        player.getInventory().setItem(player.getInventory().getHeldItemSlot(), itemStack);
     }
 }
