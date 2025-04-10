@@ -1,7 +1,6 @@
 package fr.rammex.arkaitems.items.specialitems.sellstick;
 
 import fr.rammex.arkaitems.items.ItemManager;
-import fr.rammex.arkaitems.items.Items;
 import fr.rammex.arkaitems.utils.YamlFiles;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,27 +9,39 @@ import java.util.List;
 import java.util.Set;
 
 public class SellStickSetup {
-    public static void setupItems(){
+    public static void setupItems() {
         FileConfiguration itemsConf = YamlFiles.getItemsConf();
-        ItemManager.resetItems();
+        if (itemsConf == null) {
+            System.out.println("Configuration file not loaded.");
+            return;
+        }
+
+        if (!itemsConf.isConfigurationSection("sellsticks")) {
+            System.out.println("Section 'sellsticks' not found in the configuration file.");
+            return;
+        }
 
         Set<String> itemKeys = itemsConf.getConfigurationSection("sellsticks").getKeys(false);
-        for(String key : itemKeys){
+        for (String key : itemKeys) {
             String id = key;
-            String name = itemsConf.getString("sellsticks." + key + ".Name");
-            Material material = Material.valueOf(itemsConf.getString("sellsticks." + key + ".Material"));
-            if(material == null){
-                System.out.println("Material " + itemsConf.getString("sellsticks." + key + ".Material") + " not found");
+            String name = itemsConf.getString("sellsticks." + key + ".Name", "Unknown Sell Stick");
+            String materialName = itemsConf.getString("sellsticks." + key + ".Material");
+            Material material = Material.matchMaterial(materialName);
+
+            if (material == null) {
+                System.out.println("Invalid material for sellstick: " + key);
                 continue;
             }
-            int durability = itemsConf.getInt("sellsticks." + key + ".Durability");
-            float sellMultiplier = (float) itemsConf.getDouble("sellsticks." + key + ".SellMultiplier");
-            boolean dropable = itemsConf.getBoolean("sellsticks." + key + ".Dropable");
-            boolean keepOnDeath = itemsConf.getBoolean("sellsticks." + key + ".KeepOnDeath");
-            boolean indestructible = itemsConf.getBoolean("sellsticks." + key + ".Indestructible");
+
+            int durability = itemsConf.getInt("sellsticks." + key + ".Durability", 0);
+            float sellMultiplier = (float) itemsConf.getDouble("sellsticks." + key + ".SellMultiplier", 1.0);
+            boolean dropable = itemsConf.getBoolean("sellsticks." + key + ".Dropable", true);
+            boolean keepOnDeath = itemsConf.getBoolean("sellsticks." + key + ".KeepOnDeath", true);
+            boolean indestructible = itemsConf.getBoolean("sellsticks." + key + ".Indestructible", false);
             List<String> lore = itemsConf.getStringList("sellsticks." + key + ".Lore");
-            if(lore !=null){
-                for(int i = 0; i < lore.size(); i++){
+
+            if (lore != null) {
+                for (int i = 0; i < lore.size(); i++) {
                     lore.set(i, lore.get(i).replace("&", "§"));
                 }
             }

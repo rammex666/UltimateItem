@@ -23,7 +23,7 @@ public class SellStick {
         this.dropable = dropable;
         this.keepOnDeath = keepOnDeath;
         if(indestructible==true){
-            this.durability = 0;
+            this.durability = -1;
         } else {
             this.durability = durability;
         }

@@ -45,7 +45,7 @@ public class SellStickManager {
         sellSticks.remove(sellStick.getId());
     }
 
-    public SellStick getSellStickByName(String name) {
+    public static SellStick getSellStickByName(String name) {
         for (SellStick sellStick : sellSticks.values()) {
             if (sellStick.getName().equalsIgnoreCase(name)) {
                 return sellStick;
@@ -54,7 +54,7 @@ public class SellStickManager {
         return null;
     }
 
-    public ItemStack createSellStick(Player player, String name, int amount) {
+    public static ItemStack createSellStick(Player player, String name, int amount) {
         SellStick sellStick = getSellStickById(name);
         if (sellStick == null) {
             return null;

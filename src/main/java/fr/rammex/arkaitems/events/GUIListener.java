@@ -2,6 +2,8 @@ package fr.rammex.arkaitems.events;
 
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
+import fr.rammex.arkaitems.items.specialitems.sellstick.SellStick;
+import fr.rammex.arkaitems.items.specialitems.sellstick.SellStickManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,6 +31,18 @@ public class GUIListener implements Listener {
                     } else {
                         event.getWhoClicked().sendMessage("Item with name " + itemName + " does not exist.");
                     }
+                } else if (isSellStickExistWithName(getSellStickName(itemName))) {
+                    SellStick sellStick = SellStickManager.getSellStickByName(getSellStickName(itemName));
+                    if (sellStick != null) {
+                        ItemStack itemToGive = SellStickManager.createSellStick((Player) event.getWhoClicked(), sellStick.getId(), 1);
+                        if (itemToGive != null) {
+                            event.getWhoClicked().getInventory().addItem(itemToGive);
+                        } else {
+                            event.getWhoClicked().sendMessage("Failed to create sell stick.");
+                        }
+                    } else {
+                        event.getWhoClicked().sendMessage("Sell stick with name " + itemName + " does not exist.");
+                    }
                 } else {
                     event.getWhoClicked().sendMessage("Item with name " + itemName + " does not exist.");
                 }
@@ -48,4 +62,16 @@ public class GUIListener implements Listener {
         return name.replace("§", "&");
     }
 
+
+    private boolean isSellStickExistWithName(String name) {
+        if (SellStickManager.getSellStickByName(name) != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private String getSellStickName(String name) {
+        return name.replace("§", "&");
+    }
 }
