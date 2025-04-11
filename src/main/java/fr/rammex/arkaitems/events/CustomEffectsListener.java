@@ -2,6 +2,7 @@ package fr.rammex.arkaitems.events;
 
 import fr.rammex.arkaitems.ArkaItems;
 import fr.rammex.arkaitems.effects.CustomsEffects;
+import fr.rammex.arkaitems.effects.custom.BoltEffect;
 import fr.rammex.arkaitems.effects.custom.StealthEffect;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
@@ -10,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class CustomEffectsListener implements Listener {
@@ -49,6 +51,25 @@ public class CustomEffectsListener implements Listener {
                             if(effectClass == StealthEffect.class){
                                 StealthEffect.disableStealth((Player) event.getWhoClicked());
                             }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onItemUse(PlayerInteractEvent event){
+        if (event.getItem() != null && event.getItem().hasItemMeta()) {
+            String itemName = event.getItem().getItemMeta().getDisplayName();
+            if(isItemExistWithName(getItemName(itemName))) {
+                Items item = ItemManager.getItemByName(getItemName(itemName));
+                CustomsEffects customsEffects = item.getCustomsEffects();
+                if (customsEffects != null) {
+                    Class<?> effectClass = customsEffects.getEffectClass();
+                    if (effectClass != null) {
+                        if(effectClass == BoltEffect.class){
+                            BoltEffect.applyBoltEffect(event.getPlayer());
                         }
                     }
                 }
