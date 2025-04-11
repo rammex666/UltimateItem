@@ -4,6 +4,7 @@ main: fr.rammex.arkaitems.ArkaItems
 depend:
   - ShopGUIPlus
   - Factions
+  - ProtocolLib
 commands:
   arkaitems:
     description: Commande principale du plugin ArkaItems

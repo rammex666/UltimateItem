@@ -2,6 +2,7 @@ package fr.rammex.arkaitems;
 
 import fr.rammex.arkaitems.commands.ItemCommand;
 import fr.rammex.arkaitems.database.SQLiteManager;
+import fr.rammex.arkaitems.events.CustomEffectsListener;
 import fr.rammex.arkaitems.events.GUIListener;
 import fr.rammex.arkaitems.events.autoplaceblock.AutoPlaceBlockListener;
 import fr.rammex.arkaitems.events.pickaxemultiblock.PickaxeMultiBlockListener;
@@ -59,6 +60,7 @@ public final class ArkaItems extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SellStickListener(), this);
         getServer().getPluginManager().registerEvents(new AutoPlaceBlockListener(), this);
         getServer().getPluginManager().registerEvents(new PickaxeMultiBlockListener(), this);
+        getServer().getPluginManager().registerEvents(new CustomEffectsListener(), this);
     }
 
     private void loadCommands(){

@@ -1,5 +1,6 @@
 package fr.rammex.arkaitems.items;
 
+import fr.rammex.arkaitems.effects.CustomsEffects;
 import fr.rammex.arkaitems.utils.YamlFiles;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,6 +31,11 @@ public class ItemSetup {
             String fullSetName = itemsConf.getString("items." + key + ".fullSet", "none");
             String materialName = itemsConf.getString("items." + key + ".Material");
             Material material = Material.matchMaterial(materialName);
+            CustomsEffects customEffect = CustomsEffects.match(itemsConf.getString("items." + key + ".CustomEffect"));
+            if (customEffect == null) {
+                System.out.println("Invalid custom effect for item: " + key);
+                continue;
+            }
 
             if (material == null) {
                 System.out.println("Invalid material for item: " + key);
@@ -54,7 +60,7 @@ public class ItemSetup {
             List<String> enchantsAssociated = itemsConf.getStringList("items." + key + ".Enchantments_Associated");
             List<String> commandsOnEvent = itemsConf.getStringList("items." + key + ".Commands_On_Equip");
 
-            Items item = new Items(id, name, fullSetName, material, amount, dropable, keepOnDeath, dropPlayerHead, indestructible, lore, enchantsOnEquip, fullSetBonus, enchantsAssociated, commandsOnEvent);
+            Items item = new Items(id, name, fullSetName, material, customEffect, amount, dropable, keepOnDeath, dropPlayerHead, indestructible, lore, enchantsOnEquip, fullSetBonus, enchantsAssociated, commandsOnEvent);
             ItemManager.addItem(item);
         }
     }
