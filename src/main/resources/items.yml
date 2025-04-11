@@ -1,3 +1,15 @@
+pickaxe_multi_block:
+  diamond_pickaxe:
+    Material: DIAMOND_PICKAXE
+    Name: '&6Diamond MultiBlock Pickaxe'
+    Lore:
+      - '&7Mines in a configurable area'
+    Dropable: true
+    KeepOnDeath: true
+    Indestructible: false
+    Durability: 100
+    MiningArea: [3, 3, 3] # Dimensions dynamiques (x, y, z)
+
 
 auto_place_block:
   obsidian_placer:

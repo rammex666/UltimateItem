@@ -4,6 +4,8 @@ import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
 import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlock;
 import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlockManager;
+import fr.rammex.arkaitems.items.specialitems.pickaxemultiblock.PickaxeMultiBlock;
+import fr.rammex.arkaitems.items.specialitems.pickaxemultiblock.PickaxeMultiBlockManager;
 import fr.rammex.arkaitems.items.specialitems.sellstick.SellStick;
 import fr.rammex.arkaitems.items.specialitems.sellstick.SellStickManager;
 import org.bukkit.Bukkit;
@@ -74,6 +76,24 @@ public class ItemsGUI {
 
         for (int i = 0; i < autoPlaceBlock.size(); i++) {
             inventory.setItem(i + items.size() + sellSticks.size(), autoPlaceBlock.get(i));
+        }
+
+        List<ItemStack> pickaxeMultiBlock = new ArrayList<>();
+        Map<String, PickaxeMultiBlock> pickaxeMultiBlockMap = PickaxeMultiBlockManager.getItems();
+
+        for (Map.Entry<String, PickaxeMultiBlock> entry : pickaxeMultiBlockMap.entrySet()) {
+            PickaxeMultiBlock pickaxeMultiBlocks = entry.getValue();
+            ItemStack itemStack = new ItemStack(pickaxeMultiBlocks.getMaterial(), 1);
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', pickaxeMultiBlocks.getName()));
+            itemMeta.setLore(pickaxeMultiBlocks.getLore());
+            itemStack.setItemMeta(itemMeta);
+
+            pickaxeMultiBlock.add(itemStack);
+        }
+
+        for (int i = 0; i < pickaxeMultiBlock.size(); i++) {
+            inventory.setItem(i + items.size() + sellSticks.size() + autoPlaceBlock.size(), pickaxeMultiBlock.get(i));
         }
 
         player.openInventory(inventory);

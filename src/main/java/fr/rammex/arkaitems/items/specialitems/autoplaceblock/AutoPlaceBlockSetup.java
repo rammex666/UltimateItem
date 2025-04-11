@@ -38,7 +38,6 @@ public class AutoPlaceBlockSetup {
             int to = itemsConf.getInt("auto_place_block." + key + ".to", 256);
             String blockTypeFromInventoryName = itemsConf.getString("auto_place_block." + key + ".blockTypeFromInventory");
             Material blockTypeFromInventory = Material.matchMaterial(blockTypeFromInventoryName);
-            System.out.println("blockTypeFromInventory: " + blockTypeFromInventory);
             if (blockTypeFromInventory == null) {
                 System.out.println("Invalid block type from inventory for auto_place_block: " + key);
                 continue;

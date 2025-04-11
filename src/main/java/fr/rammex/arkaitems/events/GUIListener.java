@@ -4,6 +4,8 @@ import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
 import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlock;
 import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlockManager;
+import fr.rammex.arkaitems.items.specialitems.pickaxemultiblock.PickaxeMultiBlock;
+import fr.rammex.arkaitems.items.specialitems.pickaxemultiblock.PickaxeMultiBlockManager;
 import fr.rammex.arkaitems.items.specialitems.sellstick.SellStick;
 import fr.rammex.arkaitems.items.specialitems.sellstick.SellStickManager;
 import org.bukkit.entity.Player;
@@ -33,8 +35,8 @@ public class GUIListener implements Listener {
                     } else {
                         event.getWhoClicked().sendMessage("Item with name " + itemName + " does not exist.");
                     }
-                } else if (isSellStickExistWithName(getSellStickName(itemName))) {
-                    SellStick sellStick = SellStickManager.getSellStickByName(getSellStickName(itemName));
+                } else if (isSellStickExistWithName(getItemName(itemName))) {
+                    SellStick sellStick = SellStickManager.getSellStickByName(getItemName(itemName));
                     if (sellStick != null) {
                         ItemStack itemToGive = SellStickManager.createSellStick((Player) event.getWhoClicked(), sellStick.getId(), 1);
                         if (itemToGive != null) {
@@ -45,8 +47,8 @@ public class GUIListener implements Listener {
                     } else {
                         event.getWhoClicked().sendMessage("Sell stick with name " + itemName + " does not exist.");
                     }
-                } else if (isAutoPlaceBlockWithName(getAutoPlaceBlockName(itemName))) {
-                    AutoPlaceBlock autoPlaceBlock = AutoPlaceBlockManager.getItemByName(getAutoPlaceBlockName(itemName));
+                } else if (isAutoPlaceBlockWithName(getItemName(itemName))) {
+                    AutoPlaceBlock autoPlaceBlock = AutoPlaceBlockManager.getItemByName(getItemName(itemName));
                     if (autoPlaceBlock != null) {
                         ItemStack itemToGive = AutoPlaceBlockManager.createItem((Player) event.getWhoClicked(), autoPlaceBlock.getId(), 1);
                         if (itemToGive != null) {
@@ -57,13 +59,27 @@ public class GUIListener implements Listener {
                     } else {
                         event.getWhoClicked().sendMessage("autoPlaceBlock with name " + itemName + " does not exist.");
                     }
+                }else if (isPickaxeExistWithName(getItemName(itemName))) {
+                    PickaxeMultiBlock pickaxeMultiBlock = PickaxeMultiBlockManager.getItemByName(getItemName(itemName));
+                    if (pickaxeMultiBlock != null) {
+                        ItemStack itemToGive = PickaxeMultiBlockManager.createItem((Player) event.getWhoClicked(), pickaxeMultiBlock.getId(), 1);
+                        if (itemToGive != null) {
+                            event.getWhoClicked().getInventory().addItem(itemToGive);
+                        } else {
+                            event.getWhoClicked().sendMessage("Failed to create pickaxeMultiBlock.");
+                        }
+                    } else {
+                        event.getWhoClicked().sendMessage("pickaxeMultiBlock with name " + itemName + " does not exist.");
+                    }
                 }  else {
                     event.getWhoClicked().sendMessage("Item with name " + itemName + " does not exist.");
                 }
             }
         }
     }
-
+    private String getItemName(String name) {
+        return name.replace("§", "&");
+    }
     private boolean isItemExistWithName(String name) {
         if (ItemManager.getItemByName(name) != null) {
             return true;
@@ -71,12 +87,6 @@ public class GUIListener implements Listener {
             return false;
         }
     }
-
-    private String getItemName(String name) {
-        return name.replace("§", "&");
-    }
-
-
     private boolean isSellStickExistWithName(String name) {
         if (SellStickManager.getSellStickByName(name) != null) {
             return true;
@@ -84,11 +94,6 @@ public class GUIListener implements Listener {
             return false;
         }
     }
-
-    private String getSellStickName(String name) {
-        return name.replace("§", "&");
-    }
-
     private boolean isAutoPlaceBlockWithName(String name) {
         if (AutoPlaceBlockManager.getItemByName(name) != null) {
             return true;
@@ -96,8 +101,11 @@ public class GUIListener implements Listener {
             return false;
         }
     }
-
-    private String getAutoPlaceBlockName(String name) {
-        return name.replace("§", "&");
+    private boolean isPickaxeExistWithName(String name) {
+        if (PickaxeMultiBlockManager.getItemByName(name) != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

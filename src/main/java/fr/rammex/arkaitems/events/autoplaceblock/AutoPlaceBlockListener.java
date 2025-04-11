@@ -3,10 +3,6 @@ package fr.rammex.arkaitems.events.autoplaceblock;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.flags.Flags;
 import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlock;
 import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlockManager;
 import fr.rammex.arkaitems.utils.ItemMetadata;
@@ -29,7 +25,6 @@ public class AutoPlaceBlockListener implements Listener {
         if (event.getItemInHand() != null && event.getItemInHand().hasItemMeta()) {
             String itemName = event.getItemInHand().getItemMeta().getDisplayName();
             if (isAutoPlaceBlockWithName(getAutoPlaceBlockName(itemName))) {
-                System.out.println("AutoPlaceBlockListener: " + itemName);
                 event.setCancelled(true);
                 AutoPlaceBlock autoPlaceBlock = AutoPlaceBlockManager.getItemByName(getAutoPlaceBlockName(itemName));
                 if(autoPlaceBlock.isGetItemFromInventory()){
@@ -95,56 +90,30 @@ public class AutoPlaceBlockListener implements Listener {
     }
 
     private void placeBlock(Player player, AutoPlaceBlock autoPlaceBlock, Location baseLocation) {
-        player.sendMessage("Placing block: " + autoPlaceBlock.getName());
         int from = autoPlaceBlock.getFrom();
         int to = autoPlaceBlock.getTo();
         String direction = autoPlaceBlock.getDirection();
         Material material = autoPlaceBlock.getBlockTypeFromInventory();
 
         if (material != null) {
-            player.sendMessage("Placing block: " + material.name());
             float yaw = player.getLocation().getYaw();
             String cardinalDirection = getCardinalDirection(yaw);
 
             for (int i = from; i <= to; i++) {
-                Location targetLocation = baseLocation.clone();
+                Location targetLocation = baseLocation.clone(); // Clone la location de base pour chaque itération
                 if ("x".equalsIgnoreCase(direction)) {
                     switch (cardinalDirection) {
                         case "NORTH":
                             targetLocation.add(0, 0, i);
-                            if(targetLocation.add(0, 0, i).getBlock().getType() != Material.AIR){
-                                continue;
-                            }
-                            if(checkFactionAndWorldGuard(player, targetLocation.add(0, 0, i))){
-                                continue;
-                            }
                             break;
                         case "SOUTH":
                             targetLocation.add(0, 0, -i);
-                            if(targetLocation.add(0, 0, -i).getBlock().getType() != Material.AIR){
-                                continue;
-                            }
-                            if(checkFactionAndWorldGuard(player, targetLocation.add(0, 0, -i))){
-                                continue;
-                            }
                             break;
                         case "EAST":
                             targetLocation.add(-i, 0, 0);
-                            if(targetLocation.add(-i, 0, 0).getBlock().getType() != Material.AIR){
-                                continue;
-                            }
-                            if (checkFactionAndWorldGuard(player, targetLocation.add(-i, 0, 0))){
-                                continue;
-                            }
                             break;
                         case "WEST":
                             targetLocation.add(i, 0, 0);
-                            if(targetLocation.add(i, 0, 0).getBlock().getType() != Material.AIR){
-                                continue;
-                            }
-                            if (checkFactionAndWorldGuard(player, targetLocation.add(i, 0, 0))){
-                                continue;
-                            }
                             break;
                     }
                 } else if ("y".equalsIgnoreCase(direction)) {
@@ -153,6 +122,16 @@ public class AutoPlaceBlockListener implements Listener {
                     player.sendMessage("Invalid direction.");
                     return;
                 }
+
+                // Vérifie si le bloc peut être placé
+                if (targetLocation.getBlock().getType() != Material.AIR) {
+                    continue;
+                }
+                if (checkFaction(player, targetLocation)) {
+                    continue;
+                }
+
+                // Place le bloc
                 targetLocation.getBlock().setType(material);
             }
         } else {
@@ -173,19 +152,7 @@ public class AutoPlaceBlockListener implements Listener {
         }
     }
 
-    private boolean checkFactionAndWorldGuard(Player player, Location location) {
-        // Vérification WorldGuard
-        if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
-            com.sk89q.worldedit.util.Location weLocation = new com.sk89q.worldedit.util.Location(
-                    BukkitAdapter.adapt(location.getWorld()), location.getX(), location.getY(), location.getZ()
-            );
-            com.sk89q.worldguard.protection.ApplicableRegionSet regions = WorldGuard.getInstance()
-                    .getPlatform().getRegionContainer().createQuery().getApplicableRegions(weLocation);
-            if (!regions.testState(WorldGuardPlugin.inst().wrapPlayer(player), Flags.BUILD)) {
-                return true;
-            }
-        }
-
+    private boolean checkFaction(Player player, Location location) {
         // Vérification FactionsUUID
         if (Bukkit.getPluginManager().isPluginEnabled("Factions")) {
             FPlayer fPlayer = com.massivecraft.factions.FPlayers.getInstance().getByPlayer(player);

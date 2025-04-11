@@ -10,7 +10,6 @@ import java.util.Set;
 public class ItemSetup {
 
     public static void setupItems() {
-        System.out.println("Setting up items...");
         FileConfiguration itemsConf = YamlFiles.getItemsConf();
         if (itemsConf == null) {
             System.out.println("Configuration file not loaded.");
@@ -26,7 +25,6 @@ public class ItemSetup {
 
         Set<String> itemKeys = itemsConf.getConfigurationSection("items").getKeys(false);
         for (String key : itemKeys) {
-            System.out.println("Loading item: " + key);
             String id = key;
             String name = itemsConf.getString("items." + key + ".Name", "Unknown Item");
             String fullSetName = itemsConf.getString("items." + key + ".fullSet", "none");
