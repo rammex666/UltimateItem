@@ -8,7 +8,8 @@ import java.util.Map;
 
 public enum CustomsEffects {
     STEALTH("Stealth", "Hides the player's name and makes them invisible", StealthEffect.class),
-    BOLT("Bolt", "Strikes lightning at the target location", BoltEffect.class);
+    BOLT("Bolt", "Strikes lightning at the target location", BoltEffect.class),
+    SPAWNERREMOVER("SpawnerRemover", "Removes the spawner", null);
 
     private final String name;
     private final String description;

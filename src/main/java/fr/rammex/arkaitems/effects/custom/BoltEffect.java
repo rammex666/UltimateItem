@@ -1,6 +1,5 @@
 package fr.rammex.arkaitems.effects.custom;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.LightningStrike;
@@ -9,7 +8,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.weather.LightningStrikeEvent;
-import org.bukkit.plugin.Plugin;
 
 public class BoltEffect implements Listener {
 
@@ -38,9 +36,8 @@ public class BoltEffect implements Listener {
         LightningStrike lightning = event.getLightning();
         Location location = lightning.getLocation();
 
-        // Vérifier le bloc exact où l'éclair frappe
         if (location.getBlock().getType() == Material.FIRE) {
-            location.getBlock().setType(Material.AIR); // Supprimer le feu
+            location.getBlock().setType(Material.AIR);
         }
 
         // Parcourir les blocs autour de l'éclair dans un rayon de 3 blocs
