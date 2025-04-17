@@ -59,6 +59,3 @@ items:
     Enchantments_Associated:
       - 'DAMAGE_ALL:1'
       - 'DURABILITY:3'
-    Commands_On_Equip:
-      - 'say Hello'
-      - 'give %player% diamond 1'

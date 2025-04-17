@@ -3,11 +3,17 @@ package fr.rammex.arkaitems;
 import fr.rammex.arkaitems.commands.ItemCommand;
 import fr.rammex.arkaitems.database.SQLiteManager;
 import fr.rammex.arkaitems.effects.custom.BoltEffect;
+import fr.rammex.arkaitems.effects.custom.SpawnerRemoverEffect;
 import fr.rammex.arkaitems.events.CustomEffectsListener;
+import fr.rammex.arkaitems.events.FullSetListener;
 import fr.rammex.arkaitems.events.GUIListener;
+import fr.rammex.arkaitems.events.ItemListener;
 import fr.rammex.arkaitems.events.autoplaceblock.AutoPlaceBlockListener;
+import fr.rammex.arkaitems.events.commandsonevent.CommandsOnEventListener;
 import fr.rammex.arkaitems.events.pickaxemultiblock.PickaxeMultiBlockListener;
 import fr.rammex.arkaitems.events.sellstick.SellStickListener;
+import fr.rammex.arkaitems.fullsets.FullSetManager;
+import fr.rammex.arkaitems.fullsets.FullSetSetup;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.ItemSetup;
 import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlockManager;
@@ -47,6 +53,9 @@ public final class ArkaItems extends JavaPlugin {
         //ITEMS
         loadItems();
 
+        // FULLSETS
+        FullSetSetup.setupFullSets();
+
         // LOAD MESSAGES
         getLoadMessages();
     }
@@ -63,6 +72,10 @@ public final class ArkaItems extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PickaxeMultiBlockListener(), this);
         getServer().getPluginManager().registerEvents(new CustomEffectsListener(), this);
         getServer().getPluginManager().registerEvents(new BoltEffect(), this);
+        getServer().getPluginManager().registerEvents(new SpawnerRemoverEffect(), this);
+        getServer().getPluginManager().registerEvents(new ItemListener(), this);
+        getServer().getPluginManager().registerEvents(new CommandsOnEventListener(), this);
+        getServer().getPluginManager().registerEvents(new FullSetListener(), this);
     }
 
     private void loadCommands(){
@@ -72,6 +85,7 @@ public final class ArkaItems extends JavaPlugin {
     private void getLoadMessages(){
         getLogger().info("Plugin loaded !");
         getLogger().info("Version: " + getDescription().getVersion());
+        getLogger().info(FullSetManager.getSetCount()+ " fullsets loaded.");
         getLogger().info(ItemManager.getItemCount() + " items loaded.");
         getLogger().info("Sellsticks loaded: " + SellStickManager.getSellStickCount());
         getLogger().info("AutoPlaceBlocks loaded: " + AutoPlaceBlockManager.getItemCount());

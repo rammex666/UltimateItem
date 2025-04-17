@@ -28,7 +28,6 @@ public class ItemSetup {
         for (String key : itemKeys) {
             String id = key;
             String name = itemsConf.getString("items." + key + ".Name", "Unknown Item");
-            String fullSetName = itemsConf.getString("items." + key + ".fullSet", "none");
             String materialName = itemsConf.getString("items." + key + ".Material");
             Material material = Material.matchMaterial(materialName);
             CustomsEffects customEffect = CustomsEffects.match(itemsConf.getString("items." + key + ".CustomEffect"));
@@ -55,12 +54,23 @@ public class ItemSetup {
                 }
             }
 
-            List<String> enchantsOnEquip = itemsConf.getStringList("items." + key + ".Enchantments_On_Equip");
-            List<String> fullSetBonus = itemsConf.getStringList("items." + key + ".Full_Set_Bonus");
-            List<String> enchantsAssociated = itemsConf.getStringList("items." + key + ".Enchantments_Associated");
-            List<String> commandsOnEvent = itemsConf.getStringList("items." + key + ".Commands_On_Equip");
+            List<String> typesCommandsOnEvent;
+            List<String> commandsOnYou;
+            List<String> commandsOnEnemy;
 
-            Items item = new Items(id, name, fullSetName, material, customEffect, amount, dropable, keepOnDeath, dropPlayerHead, indestructible, lore, enchantsOnEquip, fullSetBonus, enchantsAssociated, commandsOnEvent);
+            List<String> enchantsOnEquip = itemsConf.getStringList("items." + key + ".Enchantments_On_Equip");
+            List<String> enchantsAssociated = itemsConf.getStringList("items." + key + ".Enchantments_Associated");
+            if(itemsConf.get("items." + key + ".Commands_On_Event") != null) {
+                typesCommandsOnEvent = itemsConf.getStringList("items." + key + ".Commands_On_Event.type");
+                commandsOnYou = itemsConf.getStringList("items." + key + ".Commands_On_Event.commandsOnYou");
+                commandsOnEnemy = itemsConf.getStringList("items." + key + ".Commands_On_Event.commandsOnEnemy");
+            } else {
+                typesCommandsOnEvent = null;
+                commandsOnYou = null;
+                commandsOnEnemy = null;
+            }
+
+            Items item = new Items(id, name, material, customEffect, amount, dropable, keepOnDeath, dropPlayerHead, indestructible, lore, enchantsOnEquip, enchantsAssociated, typesCommandsOnEvent, commandsOnYou, commandsOnEnemy);
             ItemManager.addItem(item);
         }
     }

@@ -1,7 +1,214 @@
 package fr.rammex.arkaitems.events;
 
+import fr.rammex.arkaitems.items.ItemManager;
+import fr.rammex.arkaitems.items.Items;
+import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlockManager;
+import fr.rammex.arkaitems.items.specialitems.pickaxemultiblock.PickaxeMultiBlockManager;
+import fr.rammex.arkaitems.items.specialitems.sellstick.SellStickManager;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.List;
 
 public class ItemListener implements Listener {
 
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent event){
+        if (event.getItemDrop().getItemStack().hasItemMeta()) {
+            String itemName = event.getItemDrop().getItemStack().getItemMeta().getDisplayName();
+            if(checkDropable(getItemName(itemName))){
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getSlotType() == InventoryType.SlotType.ARMOR) {
+            ItemStack currentItem = event.getCurrentItem();
+            ItemStack cursorItem = event.getCursor();
+
+            // armure +
+            if (cursorItem != null && cursorItem.hasItemMeta()) {
+                String itemName = cursorItem.getItemMeta().getDisplayName();
+                if(isItemExistWithName(getItemName(itemName))) {
+                    Items item = ItemManager.getItemByName(getItemName(itemName));
+                    List<String> effectsOnEquip = item.getEnchantsOnEquip();
+                    if (effectsOnEquip != null) {
+                        applyPotionEffectsFromConfig((Player) event.getWhoClicked(), effectsOnEquip);
+                    }
+                }
+            }
+
+            // armure -
+            if (currentItem != null && currentItem.hasItemMeta()) {
+                String itemName = currentItem.getItemMeta().getDisplayName();
+                if(isItemExistWithName(getItemName(itemName))) {
+                    Items item = ItemManager.getItemByName(getItemName(itemName));
+                    List<String> effectsOnEquip = item.getEnchantsOnEquip();
+                    if (effectsOnEquip != null) {
+                        removePotionEffectsFromConfig((Player) event.getWhoClicked(), effectsOnEquip);
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        System.out.println("Le joueur est mort : " + event.getEntity().getName());
+        Player player = event.getEntity();
+        List<ItemStack> drops = event.getDrops();
+        for (ItemStack item : drops) {
+            String itemName = item.getItemMeta().getDisplayName();
+            if (checkKeepOnDeath(getItemName(itemName))) {
+                event.getDrops().remove(item);
+                player.getInventory().addItem(item);
+                player.sendMessage("§cVous avez perdu votre " + itemName + " mais il a été ajouté à votre inventaire.");
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDurabilityChange(PlayerItemDamageEvent event){
+        if (event.getItem().hasItemMeta()) {
+            String itemName = event.getItem().getItemMeta().getDisplayName();
+            if (checkIsIndestructible(getItemName(itemName))) {
+                    event.setCancelled(true);
+                    event.getPlayer().sendMessage("§cCet item est indestructible.");
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerGetKilledByPlayer(PlayerDeathEvent event) {
+        if (event.getEntity().getKiller() != null) {
+            Player killer = event.getEntity().getKiller();
+            Player player = event.getEntity();
+            if (killer.getInventory().getItemInMainHand() != null && killer.getInventory().getItemInMainHand().hasItemMeta()) {
+                String itemName = killer.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+                if (isItemExistWithName(getItemName(itemName))) {
+                    Items item = ItemManager.getItemByName(getItemName(itemName));
+                    if(item.isDropPlayerHead()){
+                        ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD, 1);
+                        SkullMeta skullMeta = (SkullMeta) playerHead.getItemMeta();
+
+                        if (skullMeta != null) {
+                            skullMeta.setOwningPlayer(player); // Associer la tête au joueur tué
+                            skullMeta.setDisplayName("Tête de " + player.getName()); // Nom personnalisé
+                            playerHead.setItemMeta(skullMeta);
+                        }
+                        killer.getInventory().addItem(playerHead);
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+    private boolean isItemExistWithName(String name) {
+        if (ItemManager.getItemByName(name) != null) {
+            return true;}
+        else {
+            return false;
+        }
+    }
+
+    private String getItemName(String name) {
+        return name.replace("§", "&");
+    }
+
+
+    private boolean checkDropable(String name){
+        if (ItemManager.getItemByName(name) != null) {
+            return ItemManager.getItemByName(name).isDropable();
+        } else if (SellStickManager.getSellStickByName(name) != null) {
+            return SellStickManager.getSellStickByName(name).isDropable();
+        } else if (AutoPlaceBlockManager.getItemByName(name) != null) {
+            return AutoPlaceBlockManager.getItemByName(name).isDropable();
+        } else if (PickaxeMultiBlockManager.getItemByName(name) != null) {
+            return PickaxeMultiBlockManager.getItemByName(name).isDropable();
+        } else {
+            return false;
+        }
+    }
+
+    private boolean checkKeepOnDeath(String name){
+        if (ItemManager.getItemByName(name) != null) {
+            return ItemManager.getItemByName(name).isKeepOnDeath();
+        } else if (SellStickManager.getSellStickByName(name) != null) {
+            return SellStickManager.getSellStickByName(name).isKeepOnDeath();
+        } else if (AutoPlaceBlockManager.getItemByName(name) != null) {
+            return AutoPlaceBlockManager.getItemByName(name).isKeepOnDeath();
+        } else if (PickaxeMultiBlockManager.getItemByName(name) != null) {
+            return PickaxeMultiBlockManager.getItemByName(name).isKeepOnDeath();
+        } else {
+            return false;
+        }
+    }
+
+    private boolean checkIsIndestructible(String name){
+        if (ItemManager.getItemByName(name) != null) {
+            return ItemManager.getItemByName(name).isIndestructible();
+        } else if (SellStickManager.getSellStickByName(name) != null) {
+            return SellStickManager.getSellStickByName(name).isIndestructible();
+        } else if (AutoPlaceBlockManager.getItemByName(name) != null) {
+            return AutoPlaceBlockManager.getItemByName(name).isIndestructible();
+        } else if (PickaxeMultiBlockManager.getItemByName(name) != null) {
+            return PickaxeMultiBlockManager.getItemByName(name).isIndestructible();
+        } else {
+            return false;
+        }
+    }
+
+    public static void applyPotionEffectsFromConfig(Player player, List<String> effects) {
+        for (String effectEntry : effects) {
+
+            String[] parts = effectEntry.split(":");
+            if (parts.length == 2) {
+                String effectName = parts[0];
+                int level;
+                try {
+                    level = Integer.parseInt(parts[1]);
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid potion effect level: " + parts[1]);
+                    continue;
+                }
+                PotionEffectType effectType = PotionEffectType.getByName(effectName.toUpperCase());
+                if (effectType != null) {
+                    player.addPotionEffect(new PotionEffect(effectType, Integer.MAX_VALUE, level - 1));
+                } else {
+                    System.out.println("Potion effect not found: " + effectName);
+                }
+            }
+        }
+    }
+
+    public static void removePotionEffectsFromConfig(Player player, List<String> effects) {
+        for (String effectEntry : effects) {
+            String[] parts = effectEntry.split(":");
+            if (parts.length == 2) {
+                String effectName = parts[0];
+                PotionEffectType effectType = PotionEffectType.getByName(effectName.toUpperCase());
+                if (effectType != null) {
+                    player.removePotionEffect(effectType);
+                } else {
+                    System.out.println("Potion effect not found: " + effectName);
+                }
+            }
+        }
+    }
 }

@@ -16,7 +16,10 @@ public class SpawnerRemoverEffect implements Listener {
     @EventHandler
     public void onSpawnerRemove(BlockBreakEvent event) {
         Material blockType = event.getBlock().getType();
-        ItemStack itemInHand = event.getPlayer().getInventory().getItemInMainHand();
+        ItemStack itemInHand = event.getPlayer().getInventory().getItemInHand();
+        if(itemInHand == null || itemInHand.getType() == Material.AIR) {
+            return;
+        }
         String itemName = itemInHand.getItemMeta().getDisplayName();
 
         if (isItemExistWithName(getItemName(itemName))) {

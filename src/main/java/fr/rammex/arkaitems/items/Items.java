@@ -8,7 +8,6 @@ import java.util.List;
 public class Items {
     private String id;
     private String name;
-    private String fullSetName;
     private Material material;
     private CustomsEffects customsEffects;
     private int amount;
@@ -18,14 +17,15 @@ public class Items {
     private boolean indestructible;
     private List<String> lore;
     private List<String> enchantsOnEquip;
-    private List<String> fullSetBonus;
     private List<String> enchantsAssociated;
-    private List<String> commandsOnEvent;
+    private List<String> typesCommandOnEvent;
+    private List<String> commandsOnYou;
+    private List<String> commandsOnEnemy;
 
-    public Items(String id, String name, String fullSetName,Material material, CustomsEffects customsEffects, int amount, boolean dropable, boolean keepOnDeath, boolean dropPlayerHead, boolean indestructible, List<String> lore, List<String> enchantsOnEquip, List<String> fullSetBonus, List<String> enchantsAssociated, List<String> commandsOnEvent) {
+
+    public Items(String id, String name, Material material, CustomsEffects customsEffects, int amount, boolean dropable, boolean keepOnDeath, boolean dropPlayerHead, boolean indestructible, List<String> lore, List<String> enchantsOnEquip, List<String> enchantsAssociated, List<String> typesCommandOnEvent, List<String> commandsOnYou, List<String> commandsOnEnemy) {
         this.id = id;
         this.name = name;
-        this.fullSetName = fullSetName;
         this.material = material;
         this.customsEffects = customsEffects;
         this.amount = amount;
@@ -35,9 +35,10 @@ public class Items {
         this.indestructible = indestructible;
         this.lore = lore;
         this.enchantsOnEquip = enchantsOnEquip;
-        this.fullSetBonus = fullSetBonus;
         this.enchantsAssociated = enchantsAssociated;
-        this.commandsOnEvent = commandsOnEvent;
+        this.typesCommandOnEvent = typesCommandOnEvent;
+        this.commandsOnYou = commandsOnYou;
+        this.commandsOnEnemy = commandsOnEnemy;
     }
 
     public String getId() {
@@ -45,9 +46,6 @@ public class Items {
     }
     public String getName() {
         return name;
-    }
-    public String getFullSetName() {
-        return fullSetName;
     }
     public Material getMaterial() {
         return material;
@@ -76,13 +74,16 @@ public class Items {
     public List<String> getEnchantsOnEquip() {
         return enchantsOnEquip;
     }
-    public List<String> getFullSetBonus() {
-        return fullSetBonus;
-    }
     public List<String> getEnchantsAssociated() {
         return enchantsAssociated;
     }
-    public List<String> getCommandsOnEvent() {
-        return commandsOnEvent;
+    public List<String> getTypesCommandOnEvent() {
+        return typesCommandOnEvent;
+    }
+    public List<String> getCommandsOnYou() {
+        return commandsOnYou;
+    }
+    public List<String> getCommandsOnEnemy() {
+        return commandsOnEnemy;
     }
 }
