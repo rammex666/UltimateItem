@@ -6,6 +6,7 @@ import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlockManag
 import fr.rammex.arkaitems.items.specialitems.pickaxemultiblock.PickaxeMultiBlockManager;
 import fr.rammex.arkaitems.items.specialitems.sellstick.SellStickManager;
 import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -67,11 +68,16 @@ public class ItemListener implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        System.out.println("Le joueur est mort : " + event.getEntity().getName());
         Player player = event.getEntity();
         List<ItemStack> drops = event.getDrops();
+        if (drops == null || drops.isEmpty()) {
+            return;
+        }
         for (ItemStack item : drops) {
             String itemName = item.getItemMeta().getDisplayName();
+            if(itemName == null){
+                continue;
+            }
             if (checkKeepOnDeath(getItemName(itemName))) {
                 event.getDrops().remove(item);
                 player.getInventory().addItem(item);
@@ -96,20 +102,20 @@ public class ItemListener implements Listener {
         if (event.getEntity().getKiller() != null) {
             Player killer = event.getEntity().getKiller();
             Player player = event.getEntity();
-            if (killer.getInventory().getItemInMainHand() != null && killer.getInventory().getItemInMainHand().hasItemMeta()) {
-                String itemName = killer.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+            if (killer.getInventory().getItemInHand() != null && killer.getInventory().getItemInHand().hasItemMeta()) {
+                String itemName = killer.getInventory().getItemInHand().getItemMeta().getDisplayName();
                 if (isItemExistWithName(getItemName(itemName))) {
                     Items item = ItemManager.getItemByName(getItemName(itemName));
                     if(item.isDropPlayerHead()){
-                        ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD, 1);
-                        SkullMeta skullMeta = (SkullMeta) playerHead.getItemMeta();
+                        ItemStack skull = new ItemStack(Material.LEGACY_SKULL, 1, (short) SkullType.PLAYER.ordinal());
+                        SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
 
                         if (skullMeta != null) {
                             skullMeta.setOwningPlayer(player); // Associer la tête au joueur tué
                             skullMeta.setDisplayName("Tête de " + player.getName()); // Nom personnalisé
-                            playerHead.setItemMeta(skullMeta);
+                            skull.setItemMeta(skullMeta);
                         }
-                        killer.getInventory().addItem(playerHead);
+                        killer.getInventory().addItem(skull);
                     }
                 }
             }
