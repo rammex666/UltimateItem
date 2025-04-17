@@ -1,3 +1,11 @@
+fullsets:
+  fire_set:
+    Name: '&6Fire Set'
+    Set_Items:
+      - 'headOfFire'
+    Full_Set_Bonus:
+      - 'NIGHT_VISION:1'
+
 pickaxe_multi_block:
   diamond_pickaxe:
     Material: DIAMOND_PICKAXE
@@ -8,7 +16,7 @@ pickaxe_multi_block:
     KeepOnDeath: true
     Indestructible: false
     Durability: 100
-    MiningArea: [3, 3, 3] # Dimensions dynamiques (x, y, z)
+    MiningArea: [6, 6, 6] # Dimensions dynamiques (x, y, z)
 
 
 auto_place_block:
@@ -39,23 +47,43 @@ sellsticks:
     Durability: 0
 
 items:
-  headOfFire:
-    Material: DIAMOND_HELMET
-    Name: '&6Fire Helmet'
-    fullSet: 'FireSet'
+  swordOfFire:
+    Material: DIAMOND_SWORD
+    Name: '&6Fire Sword'
     Lore:
-      - '&7This is a legendary helmet'
-    Amont: 1
+      - '&7This is a legendary Sword'
+    Amount: 1
+    CustomEffect: "Bolt"
     Dropable: true
     KeepOnDeath: true
     DropPlayerHead: true
     Indestructible: true
     Enchantments_On_Equip:
-      - 'DAMAGE_ALL:1'
-      - 'DURABILITY:3'
-    Full_Set_Bonus:
-      - 'DAMAGE_ALL:1'
-      - 'DURABILITY:3'
+      - 'SPEED:1'
     Enchantments_Associated:
       - 'DAMAGE_ALL:1'
       - 'DURABILITY:3'
+  headOfFire:
+    Material: DIAMOND_HELMET
+    Name: '&6Fire Helmet'
+    Lore:
+      - '&7This is a legendary helmet'
+    Amount: 1
+    CustomEffect: "Stealth"
+    Dropable: true
+    KeepOnDeath: true
+    DropPlayerHead: true
+    Indestructible: true
+    Enchantments_On_Equip:
+      - 'SPEED:1'
+    Enchantments_Associated:
+      - 'DAMAGE_ALL:1'
+      - 'DURABILITY:3'
+    Commands_On_Event:
+      type:
+        - 'onUse' #onHit, ect...
+        - 'onHit'
+      CommandsOnYou:
+        - 'heal:50'
+      CommandsOnEnemy:
+        - 'say t''est pas bo:100'
