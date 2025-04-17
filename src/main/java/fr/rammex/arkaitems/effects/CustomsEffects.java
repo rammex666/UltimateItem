@@ -11,7 +11,7 @@ public enum CustomsEffects {
     SPAWNERREMOVER("SpawnerRemover", "Removes the spawner", SpawnerRemoverEffect.class),
     CUTTREE("CutTree", "Cuts the tree", CutTreeEffect.class),
     LIFESTEAL("LifeSteal", "Steals life from the target", LifeStealEffect.class),
-    NOFALL("NoFall", "Prevents fall damage", null),
+    NOFALL("NoFall", "Prevents fall damage", NoFallEffect.class),
     MONEYSTEAL("MoneySteal", "Steals money from the target", null),
     TELEPORT("Teleport", "Chance de se régénérer et d’être téléporté dans un rayon défini lors de la mort.", null),
     TPTOPLAYER("TeleportToPlayer", "Teleport to the player", null),

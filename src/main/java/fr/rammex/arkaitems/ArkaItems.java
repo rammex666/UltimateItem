@@ -2,10 +2,7 @@ package fr.rammex.arkaitems;
 
 import fr.rammex.arkaitems.commands.ItemCommand;
 import fr.rammex.arkaitems.database.SQLiteManager;
-import fr.rammex.arkaitems.effects.custom.BoltEffect;
-import fr.rammex.arkaitems.effects.custom.CutTreeEffect;
-import fr.rammex.arkaitems.effects.custom.LifeStealEffect;
-import fr.rammex.arkaitems.effects.custom.SpawnerRemoverEffect;
+import fr.rammex.arkaitems.effects.custom.*;
 import fr.rammex.arkaitems.events.CustomEffectsListener;
 import fr.rammex.arkaitems.events.FullSetListener;
 import fr.rammex.arkaitems.events.GUIListener;
@@ -80,6 +77,7 @@ public final class ArkaItems extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new FullSetListener(), this);
         getServer().getPluginManager().registerEvents(new CutTreeEffect(), this);
         getServer().getPluginManager().registerEvents(new LifeStealEffect(), this);
+        getServer().getPluginManager().registerEvents(new NoFallEffect(), this);
     }
 
     private void loadCommands(){
