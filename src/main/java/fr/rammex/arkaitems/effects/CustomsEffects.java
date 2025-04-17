@@ -1,7 +1,6 @@
 package fr.rammex.arkaitems.effects;
 
-import fr.rammex.arkaitems.effects.custom.BoltEffect;
-import fr.rammex.arkaitems.effects.custom.StealthEffect;
+import fr.rammex.arkaitems.effects.custom.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +8,19 @@ import java.util.Map;
 public enum CustomsEffects {
     STEALTH("Stealth", "Hides the player's name and makes them invisible", StealthEffect.class),
     BOLT("Bolt", "Strikes lightning at the target location", BoltEffect.class),
-    SPAWNERREMOVER("SpawnerRemover", "Removes the spawner", null);
+    SPAWNERREMOVER("SpawnerRemover", "Removes the spawner", SpawnerRemoverEffect.class),
+    CUTTREE("CutTree", "Cuts the tree", CutTreeEffect.class),
+    LIFESTEAL("LifeSteal", "Steals life from the target", LifeStealEffect.class),
+    NOFALL("NoFall", "Prevents fall damage", null),
+    MONEYSTEAL("MoneySteal", "Steals money from the target", null),
+    TELEPORT("Teleport", "Chance de se régénérer et d’être téléporté dans un rayon défini lors de la mort.", null),
+    TPTOPLAYER("TeleportToPlayer", "Teleport to the player", null),
+    CHESTREADER("ChestReader", "Reads the chest", null),
+    MASKFARM("MaskFarm", "Farms the mask", null),
+    REPAIRTOOL("RepairTool", "Repairs the tool", null),
+    ARMORDODGE("ArmorDodge", "Dodges the armor", null),
+    ROTATEENEMY("RotateEnemy", "Rotates the enemy", null),
+    RANDOMITEMINVENTORY("RandomItemInventory", "Gives a random item in the inventory", null);
 
     private final String name;
     private final String description;

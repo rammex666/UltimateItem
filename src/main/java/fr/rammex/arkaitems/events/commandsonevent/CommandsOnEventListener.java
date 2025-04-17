@@ -13,6 +13,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import java.util.List;
 import java.util.Random;
 
+import static org.bukkit.entity.EntityType.PLAYER;
+
 public class CommandsOnEventListener implements Listener {
 
     @EventHandler
@@ -54,10 +56,14 @@ public class CommandsOnEventListener implements Listener {
 
     @EventHandler
     public void onHit(EntityDamageByEntityEvent event) {
+        if (event.getEntity() == null || event.getDamager() == null || event.getDamager().getType() != PLAYER) {
+            return;
+        }
+
         if (event.getDamager() instanceof Player) {
             Player player = (Player) event.getDamager();
-            if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().hasItemMeta()) {
-                String itemName = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+            if (player.getItemInHand() != null && player.getItemInHand().hasItemMeta()) {
+                String itemName = player.getItemInHand().getItemMeta().getDisplayName();
                 if (isItemExistWithName(getItemName(itemName))) {
                     Items item = ItemManager.getItemByName(getItemName(itemName));
                     if (item.getTypesCommandOnEvent() != null) {
