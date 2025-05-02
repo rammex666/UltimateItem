@@ -1,0 +1,15 @@
+crafts:
+  swordOfFireCraft:
+    itemId: 'swordOfFire'
+    amount: 1
+    recipe:
+      shape:
+          - ' A '
+          - ' B '
+          - ' C '
+      ingredients:
+          A: 'arkaitem:headOfFire'
+          B: 'stick'
+          C: 'stick'
+    require:
+      - 'permission:arkaitem.craft.swordOfFire'

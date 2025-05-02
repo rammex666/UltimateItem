@@ -1,6 +1,9 @@
 package fr.rammex.arkaitems;
 
 import fr.rammex.arkaitems.commands.ItemCommand;
+import fr.rammex.arkaitems.commands.ItemCraftCommand;
+import fr.rammex.arkaitems.craft.CraftManager;
+import fr.rammex.arkaitems.craft.CraftSetup;
 import fr.rammex.arkaitems.database.SQLiteManager;
 import fr.rammex.arkaitems.effects.custom.*;
 import fr.rammex.arkaitems.events.CustomEffectsListener;
@@ -13,6 +16,7 @@ import fr.rammex.arkaitems.events.pickaxemultiblock.PickaxeMultiBlockListener;
 import fr.rammex.arkaitems.events.sellstick.SellStickListener;
 import fr.rammex.arkaitems.fullsets.FullSetManager;
 import fr.rammex.arkaitems.fullsets.FullSetSetup;
+import fr.rammex.arkaitems.gui.CustomCraftGUI;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.ItemSetup;
 import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlockManager;
@@ -49,8 +53,11 @@ public final class ArkaItems extends JavaPlugin {
         SQLiteManager sqLiteManager = new SQLiteManager("arkaitem", new File(getDataFolder(), "data.db"));
         sqLiteManager.load();
 
-        //ITEMS
+        // ITEMS
         loadItems();
+
+        // CRAFT
+        CraftSetup.setupCrafts();
 
         // FULLSETS
         FullSetSetup.setupFullSets();
@@ -78,10 +85,12 @@ public final class ArkaItems extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CutTreeEffect(), this);
         getServer().getPluginManager().registerEvents(new LifeStealEffect(), this);
         getServer().getPluginManager().registerEvents(new NoFallEffect(), this);
+        getServer().getPluginManager().registerEvents(new CustomCraftGUI(), this);
     }
 
     private void loadCommands(){
         getCommand("arkaitems").setExecutor(new ItemCommand());
+        getCommand("itemcraft").setExecutor(new ItemCraftCommand());
     }
 
     private void getLoadMessages(){
@@ -92,6 +101,7 @@ public final class ArkaItems extends JavaPlugin {
         getLogger().info("Sellsticks loaded: " + SellStickManager.getSellStickCount());
         getLogger().info("AutoPlaceBlocks loaded: " + AutoPlaceBlockManager.getItemCount());
         getLogger().info("PickaxeMultiBlocks loaded: " + PickaxeMultiBlockManager.getItemCount());
+        getLogger().info("Crafts loaded: " + CraftManager.getCraftCount());
     }
 
     private void loadItems(){

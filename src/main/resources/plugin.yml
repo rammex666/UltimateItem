@@ -8,3 +8,5 @@ depend:
 commands:
   arkaitems:
     description: Commande principale du plugin ArkaItems
+  itemcraft:
+    description: Commande pour créer un item
