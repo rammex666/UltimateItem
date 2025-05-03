@@ -12,4 +12,6 @@ crafts:
           B: 'stick'
           C: 'stick'
     require:
-      - 'permission:arkaitem.craft.swordOfFire'
+      - 'perm:arkaitem.craft.swordOfFire'
+    succes-commands:
+      - 'broadcast &6%player% crafted a Sword of Fire!'

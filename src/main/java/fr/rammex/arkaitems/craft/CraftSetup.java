@@ -59,8 +59,17 @@ public class CraftSetup {
                 }
             }
 
+            List<String> commandsSuccess = craftConf.getStringList("crafts." + key + ".succes-commands");
+            if (commandsSuccess != null) {
+                for (int i = 0; i < commandsSuccess.size(); i++) {
+                    commandsSuccess.set(i, commandsSuccess.get(i).replace("&", "§"));
+                }
+            } else {
+                commandsSuccess = new ArrayList<>();
+            }
+
             // Create and register the craft
-            Craft craft = new Craft(id, itemId, amount, recipeList, require);
+            Craft craft = new Craft(id, itemId, amount, recipeList, require, commandsSuccess);
             CraftManager.addCraft(craft);
         }
     }

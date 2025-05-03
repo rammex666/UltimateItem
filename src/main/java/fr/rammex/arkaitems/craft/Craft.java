@@ -8,13 +8,15 @@ public class Craft {
     private int amount;
     private List<String> recipe;
     private List<String> require;
+    private List<String> commandsSuccess;
 
-    public Craft(String id, String itemId, int amount, List<String> recipe, List<String> require) {
+    public Craft(String id, String itemId, int amount, List<String> recipe, List<String> require, List<String> commandsSuccess) {
         this.id = id;
         this.itemId = itemId;
         this.amount = amount;
         this.recipe = recipe;
         this.require = require;
+        this.commandsSuccess = commandsSuccess;
     }
 
     public String getId() {
@@ -35,5 +37,9 @@ public class Craft {
 
     public List<String> getRequire() {
         return require;
+    }
+
+    public List<String> getCommandsSuccess() {
+        return commandsSuccess;
     }
 }

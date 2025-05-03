@@ -19,8 +19,17 @@ public class CraftManager {
         return craftMap;
     }
 
-    public static Craft getItemById(String id) {
+    public static Craft getCraftById(String id) {
         return craftMap.get(id);
+    }
+
+    public static Craft getCraftByItemId(String id) {
+        for (Craft craft : craftMap.values()) {
+            if (craft.getItemId().equals(id)) {
+                return craft;
+            }
+        }
+        return null;
     }
 
 
@@ -67,8 +76,9 @@ public class CraftManager {
 
     private static boolean validateRequirements(List<String> requirements, Player player) {
         for (String requirement : requirements) {
-            if (requirement.equals("level:10")) {
-                if (player.getLevel() < 10) {
+            if(requirement.startsWith("perm:")){
+                String permission = requirement.split(":")[1];
+                if (!player.hasPermission(permission)) {
                     return false;
                 }
             }

@@ -21,12 +21,16 @@ import static fr.rammex.arkaitems.utils.TimesTask.waitOneTick;
 
 public class CustomCraftGUI implements Listener {
 
+    private static boolean craftSuccess = false;
+
     public static void buildInventory(Player player, int size) {
         // Taille minimale de l'inventaire (grille de craft + 2 lignes supplémentaires)
         int minInventorySize = size * size + 2 * 9;
 
         // Arrondir au multiple de 9 supérieur
         int INVENTORY_SIZE = ((minInventorySize + 8) / 9) * 9;
+
+
 
         // Vérifier que l'inventaire ne dépasse pas 54 emplacements
         if (INVENTORY_SIZE > 54) {
@@ -120,6 +124,7 @@ public class CustomCraftGUI implements Listener {
                         ItemStack result = ItemManager.createItem(player, matchingCraft.getItemId(), 1);
                         if (result != null) {
                             event.getClickedInventory().setItem(resultSlot, result);
+                            craftSuccess = true;
                         } else {
                         }
                     }
@@ -127,11 +132,34 @@ public class CustomCraftGUI implements Listener {
             });
 
             if (clickedSlot == resultSlot) {
-                if(event.getClickedInventory().getItem(resultSlot) != null){
+                ItemStack cursorItem = event.getCursor();
+
+                // Si le joueur essaie de placer un item dans le resultSlot
+                if (cursorItem != null && cursorItem.getType() != Material.AIR) {
+                    event.setCancelled(true);
+                    return;
+                }
+
+                if(event.getClickedInventory().getItem(resultSlot) != null && craftSuccess){
                     for (int row = 0; row < size; row++) {
                         for (int col = 0; col < size; col++) {
                             int craftSlot = (startRow + row) * 9 + (startCol + col);
-                            event.getClickedInventory().setItem(craftSlot, null); // Réinitialiser la grille de craft
+                            event.getClickedInventory().setItem(craftSlot, null);
+                        }
+                    }
+
+                    Player player = (Player) event.getWhoClicked();
+                    player.updateInventory();// Réinitialiser la grille de craft
+
+                    String itemName = event.getClickedInventory().getItem(resultSlot).getItemMeta().getDisplayName();
+
+                    Craft matchingCraft = CraftManager.getCraftByItemId(ItemManager.getItemByName(getItemName(itemName)).getId());
+                    if (matchingCraft != null) {
+                        List<String> commandsSuccess = matchingCraft.getCommandsSuccess();
+                        if (commandsSuccess != null) {
+                            for (String command : commandsSuccess) {
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
+                            }
                         }
                     }
                 }
