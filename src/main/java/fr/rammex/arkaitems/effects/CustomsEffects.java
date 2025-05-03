@@ -13,7 +13,7 @@ public enum CustomsEffects {
     LIFESTEAL("LifeSteal", "Steals life from the target", LifeStealEffect.class),
     NOFALL("NoFall", "Prevents fall damage", NoFallEffect.class),
     MONEYSTEAL("MoneySteal", "Steals money from the target", null),
-    TELEPORT("Teleport", "Chance de se régénérer et d’être téléporté dans un rayon défini lors de la mort.", null),
+    TELEPORT("Teleport", "Chance de se régénérer et d’être téléporté dans un rayon défini lors de la mort.", TeleportEffect.class),
     TPTOPLAYER("TeleportToPlayer", "Teleport to the player", null),
     CHESTREADER("ChestReader", "Reads the chest", null),
     MASKFARM("MaskFarm", "Farms the mask", null),
