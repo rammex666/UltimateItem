@@ -86,6 +86,11 @@ public final class ArkaItems extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new LifeStealEffect(), this);
         getServer().getPluginManager().registerEvents(new NoFallEffect(), this);
         getServer().getPluginManager().registerEvents(new CustomCraftGUI(), this);
+        getServer().getPluginManager().registerEvents(new ChestReaderEffect(), this);
+        getServer().getPluginManager().registerEvents(new MaskFarmEffect(), this);
+        getServer().getPluginManager().registerEvents(new TeleportEffect(), this);
+        getServer().getPluginManager().registerEvents(new TpToPlayerEffect(), this);
+        getServer().getPluginManager().registerEvents(new MoneyStealEffect(), this);
     }
 
     private void loadCommands(){
