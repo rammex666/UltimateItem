@@ -82,7 +82,14 @@ public class ItemManager {
             }
         }
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', item.getName()));
-        itemMeta.setLore(item.getLore());
+        List<String> lore = item.getLore();
+        if (lore != null) {
+            for (int i = 0; i < lore.size(); i++) {
+                lore.set(i, lore.get(i).replace("{owner_name}", player.getName())
+                        .replace("{item_id}", id));
+            }
+        }
+        itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
 
         ItemMetaDataManager.insertNewOwnerItem(player.getUniqueId(), "Item:"+item.getId());

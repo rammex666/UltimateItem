@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AutoPlaceBlockManager {
@@ -65,7 +66,14 @@ public class AutoPlaceBlockManager {
         itemStack = ItemMetadata.setMetadata(itemStack, "Durability", String.valueOf(sellStick.getDurability()));
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', sellStick.getName()));
-        itemMeta.setLore(sellStick.getLore());
+        List<String> lore = sellStick.getLore();
+        if (lore != null) {
+            for (int i = 0; i < lore.size(); i++) {
+                lore.set(i, lore.get(i).replace("{owner_name}", player.getName())
+                        .replace("{item_id}", id));
+            }
+        }
+        itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
 
         ItemMetaDataManager.insertNewOwnerItem(player.getUniqueId(), "AutoBlockPlacer:"+sellStick.getId());

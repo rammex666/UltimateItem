@@ -11,6 +11,7 @@ public class Items {
     private Material material;
     private CustomsEffects customsEffects;
     private int amount;
+    private int durability;
     private boolean dropable;
     private boolean keepOnDeath;
     private boolean dropPlayerHead;
@@ -23,12 +24,13 @@ public class Items {
     private List<String> commandsOnEnemy;
 
 
-    public Items(String id, String name, Material material, CustomsEffects customsEffects, int amount, boolean dropable, boolean keepOnDeath, boolean dropPlayerHead, boolean indestructible, List<String> lore, List<String> enchantsOnEquip, List<String> enchantsAssociated, List<String> typesCommandOnEvent, List<String> commandsOnYou, List<String> commandsOnEnemy) {
+    public Items(String id, String name, Material material, CustomsEffects customsEffects, int amount, int durability, boolean dropable, boolean keepOnDeath, boolean dropPlayerHead, boolean indestructible, List<String> lore, List<String> enchantsOnEquip, List<String> enchantsAssociated, List<String> typesCommandOnEvent, List<String> commandsOnYou, List<String> commandsOnEnemy) {
         this.id = id;
         this.name = name;
         this.material = material;
         this.customsEffects = customsEffects;
         this.amount = amount;
+        this.durability = durability;
         this.dropable = dropable;
         this.keepOnDeath = keepOnDeath;
         this.dropPlayerHead = dropPlayerHead;
@@ -55,6 +57,9 @@ public class Items {
     }
     public int getAmount() {
         return amount;
+    }
+    public int getDurability() {
+        return durability;
     }
     public boolean isDropable() {
         return dropable;

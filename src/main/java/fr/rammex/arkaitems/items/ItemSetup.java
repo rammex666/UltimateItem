@@ -42,6 +42,7 @@ public class ItemSetup {
             }
 
             int amount = itemsConf.getInt("items." + key + ".Amount", 1); // Default to 1 if missing
+            int durability = itemsConf.getInt("items." + key + ".Durability", -1); // Default to -1 if missing
             boolean dropable = itemsConf.getBoolean("items." + key + ".Dropable", true);
             boolean keepOnDeath = itemsConf.getBoolean("items." + key + ".KeepOnDeath", true);
             boolean dropPlayerHead = itemsConf.getBoolean("items." + key + ".DropPlayerHead", false);
@@ -52,6 +53,10 @@ public class ItemSetup {
                 for (int i = 0; i < lore.size(); i++) {
                     lore.set(i, lore.get(i).replace("&", "§"));
                 }
+            }
+
+            if(indestructible) {
+                durability = -1;
             }
 
             List<String> typesCommandsOnEvent;
@@ -76,7 +81,7 @@ public class ItemSetup {
                 commandsOnEnemy = null;
             }
 
-            Items item = new Items(id, name, material, customEffect, amount, dropable, keepOnDeath, dropPlayerHead, indestructible, lore, enchantsOnEquip, enchantsAssociated, typesCommandsOnEvent, commandsOnYou, commandsOnEnemy);
+            Items item = new Items(id, name, material, customEffect, amount, durability, dropable, keepOnDeath, dropPlayerHead, indestructible, lore, enchantsOnEquip, enchantsAssociated, typesCommandsOnEvent, commandsOnYou, commandsOnEnemy);
             ItemManager.addItem(item);
         }
     }

@@ -1,3 +1,5 @@
+# LORE PLACEHOLDER : {owner_name} {item_id}
+
 fullsets:
   fire_set:
     Name: '&6Fire Set'
@@ -53,6 +55,7 @@ items:
     Lore:
       - '&7This is a legendary Sword'
     Amount: 1
+    Durability: 100
     CustomEffect: "Bolt"
     Dropable: true
     KeepOnDeath: true
