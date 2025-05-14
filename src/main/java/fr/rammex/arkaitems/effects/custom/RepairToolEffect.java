@@ -11,6 +11,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import static fr.rammex.arkaitems.utils.Messages.getMessage;
+
 public class RepairToolEffect implements Listener {
 
     @EventHandler
@@ -34,7 +36,7 @@ public class RepairToolEffect implements Listener {
                 if(playerBoots != null && playerBoots.getType() != Material.AIR) {
                     playerBoots.setDurability((short) (playerBoots.getDurability()+1));
                 }
-                player.sendMessage("§aL'armure a été réparée de 1 point de durabilité.");
+                player.sendMessage(getMessage("custom-effect.RepaireEffect.proc-message"));
                 ItemMetadata.updateDurability(player.getInventory().getItemInHand());
             }
         }

@@ -9,6 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.weather.LightningStrikeEvent;
 
+import static fr.rammex.arkaitems.utils.Messages.getMessage;
+
 public class BoltEffect implements Listener {
 
     private static Player summoner;
@@ -27,7 +29,7 @@ public class BoltEffect implements Listener {
             Player damagedPlayer = (Player) event.getEntity();
             if (damagedPlayer.equals(summoner)) {
                 event.setCancelled(true);
-
+                summoner.sendMessage(getMessage("custom-effect.BoltEffect.proc-message"));
             }
         }
     }

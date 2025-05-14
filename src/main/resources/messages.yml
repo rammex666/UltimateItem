@@ -1,0 +1,27 @@
+custom-effect:
+  ArmorDodgeEffect:
+    proc-message: "You dodged the attack!"
+  BoltEffect:
+    proc-message: "You summoned a bolt of lightning!"
+  LifeStealEffect:
+    proc-message: "You drained {amount} life from your enemy!"
+  MoneyStealEffect:
+    proc-message: "You stole {money} money!"
+    steal-message: "You were stole {money} money by {player}!"
+  RandomItemInventoryEffect:
+    proc-message: "T'a bousiller l'inv de {player} méchant!"
+    random-item-message: "Arghhh {player} t'a mélanger ton inventaire!"
+  RepaireEffect:
+    proc-message: "You repaired your armor!"
+  RotateEnemyEffect:
+    proc-message: "You rotated your enemy!"
+    rotated-message: "You were rotated by {player}!"
+  StealthEffect:
+    proc-message: "Vous êtes devenu invisible!"
+    end-message: "Vous êtes devenu visible!"
+  TeleportEffect:
+    proc-message: "You teleported pas loin de ta mort!"
+  TpToPlayerEffect:
+    proc-message: "You teleported to {player}!"
+    no-enemy: "There is no enemy nearby to teleport to!"
+

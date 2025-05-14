@@ -11,6 +11,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
+import static fr.rammex.arkaitems.utils.Messages.getMessage;
+
 public class ArmorDodgeEffect implements Listener {
     private double dodgeChance = ArkaItems.instance.getConfig().getDouble("custom-effect.armor-dodge-effect.proc");
 
@@ -22,7 +24,7 @@ public class ArmorDodgeEffect implements Listener {
             if (hasRequiredEffect(player)) {
                 if (Math.random() < dodgeChance) {
                     event.setCancelled(true);
-                    player.sendMessage(ChatColor.GREEN + "You dodged the attack!");
+                    player.sendMessage(getMessage("custom-effect.ArmorDodgeEffect.proc-message"));
                 }
             }
         }

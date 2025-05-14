@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static fr.rammex.arkaitems.utils.Messages.getMessage;
+
 public class RandomItemInventoryEffect implements Listener {
 
     private final double shuffleChance = ArkaItems.instance.getConfig().getDouble("custom-effect.random-item-iventory.proc");
@@ -28,8 +30,8 @@ public class RandomItemInventoryEffect implements Listener {
             if(hasRequiredEffect(damager)) {
                 if (Math.random() < shuffleChance) {
                     shuffleInventory(victim);
-                    damager.sendMessage(ChatColor.GREEN + "You shuffled " + victim.getName() + "'s inventory!");
-                    victim.sendMessage(ChatColor.RED + "Your inventory has been shuffled!");
+                    damager.sendMessage(getMessage("custom-effect.RandomItemInventoryEffect.proc-message").replace("{player}", victim.getName()));
+                    victim.sendMessage(getMessage("custom-effect.RandomItemInventoryEffect.random-item-message").replace("{player}", damager.getName()));
                 }
             }
 

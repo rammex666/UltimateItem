@@ -16,6 +16,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
 
+import static fr.rammex.arkaitems.utils.Messages.getMessage;
+
 public class MoneyStealEffect implements Listener {
 
     private static final int MINIMUM_MONEY = ArkaItems.instance.getConfig().getInt("custom-effect.money-steal.min");
@@ -42,8 +44,8 @@ public class MoneyStealEffect implements Listener {
 
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco take " + victim.getName() + " " + stolenAmount);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + attacker.getName() + " " + stolenAmount);
-            attacker.sendMessage(ChatColor.GREEN + "Vous avez volé " + stolenAmount + " à " + victim.getName() + " !");
-            victim.sendMessage(ChatColor.RED + "Vous avez perdu " + stolenAmount + " à cause de " + attacker.getName() + " !");
+            attacker.sendMessage(getMessage("custom-effect.MoneyStealEffect.proc-message").replace("{money}", String.valueOf(stolenAmount)));
+            victim.sendMessage(getMessage("custom-effect.MoneyStealEffect.steal-message").replace("{money}", String.valueOf(stolenAmount)));
             ItemMetadata.updateDurability(attacker.getInventory().getItemInHand());
         }
     }

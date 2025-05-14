@@ -16,3 +16,5 @@ custom-effect:
   teleport:
     teleport-radius: 10 # Rayon de téléportation
     proc: 0.1 # Probabilité de déclenchement de l'effet
+  tp-to-near-player:
+    near-player-radius: 10 # Rayon de recherche du joueur proche

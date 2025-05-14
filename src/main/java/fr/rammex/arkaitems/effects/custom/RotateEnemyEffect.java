@@ -11,6 +11,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
+import static fr.rammex.arkaitems.utils.Messages.getMessage;
+
 public class RotateEnemyEffect implements Listener {
     private double rotateChance = ArkaItems.instance.getConfig().getDouble("custom-effect.rotate-enemy.proc");; // 10% chance de rotate
 
@@ -23,7 +25,8 @@ public class RotateEnemyEffect implements Listener {
             if (hasRequiredEffect(player)) {
                 if (Math.random() < rotateChance) {
                     event.setCancelled(true);
-                    victim.sendMessage(ChatColor.GREEN + "You have been rotated!");
+                    player.sendMessage(getMessage("custom-effect.RotateEnemyEffect.proc-message"));
+                    victim.sendMessage(getMessage("custom-effect.RepaireEffect.rotated-message").replace("{player}", player.getName()));
                     victim.setVelocity(player.getLocation().getDirection().multiply(-1)); // Rotate the victim
                 }
             }

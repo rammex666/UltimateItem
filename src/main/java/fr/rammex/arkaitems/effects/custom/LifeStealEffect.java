@@ -12,6 +12,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
+import static fr.rammex.arkaitems.utils.Messages.getMessage;
+
 public class LifeStealEffect implements Listener {
 
     private double lifeStealPercentage = ArkaItems.instance.getConfig().getDouble("custom-effect.life-steal.percentage");; // Pourcentage de vie volée
@@ -45,6 +47,7 @@ public class LifeStealEffect implements Listener {
 
                         double newHealth = Math.min(player.getHealth() + lifeStealAmount, player.getMaxHealth());
                         player.setHealth(newHealth);
+                        player.sendMessage(getMessage("custom-effect.LifeStealEffect.proc-message").replace("{amount}", String.valueOf(lifeStealAmount)));
                         ItemMetadata.updateDurability(player.getInventory().getItemInHand());
                     }
                 }

@@ -1,5 +1,6 @@
 package fr.rammex.arkaitems.effects.custom;
 
+import fr.rammex.arkaitems.ArkaItems;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
 import fr.rammex.arkaitems.utils.ItemMetadata;
@@ -10,6 +11,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+
+import static fr.rammex.arkaitems.utils.Messages.getMessage;
 
 public class TpToPlayerEffect implements Listener {
 
@@ -22,10 +25,10 @@ public class TpToPlayerEffect implements Listener {
                 Player nearestPlayer = getNearestPlayer(player);
                 if(nearestPlayer != null){
                     player.teleport(nearestPlayer.getLocation());
-                    player.sendMessage("§aVous avez été téléporté vers " + nearestPlayer.getName());
+                    player.sendMessage(getMessage("custom-effect.TpToPlayerEffect.proc-message").replace("{player}", nearestPlayer.getName()));
                     ItemMetadata.updateDurability(player.getInventory().getItemInHand());
                 } else {
-                    player.sendMessage("§cAucun joueur à proximité.");
+                    player.sendMessage(getMessage("custom-effect.TpToPlayerEffect.no-enemy"));
                 }
             }
         }
@@ -54,7 +57,7 @@ public class TpToPlayerEffect implements Listener {
 
     private Player getNearestPlayer(Player player) {
         Player nearestPlayer = null;
-        double nearestDistance = 4.0;
+        double nearestDistance = ArkaItems.instance.getConfig().getDouble("custom-effect.tp-to-near-player.near-player-radius");
 
         for (Player onlinePlayer : player.getServer().getOnlinePlayers()) {
             if (onlinePlayer != player) {

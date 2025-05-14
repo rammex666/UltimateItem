@@ -13,6 +13,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
 
+import static fr.rammex.arkaitems.utils.Messages.getMessage;
+
 public class TeleportEffect implements Listener {
 
     private final int teleportRadius = ArkaItems.instance.getConfig().getInt("custom-effect.teleport.teleport-radius");
@@ -35,6 +37,7 @@ public class TeleportEffect implements Listener {
                             Location teleportLocation = getRandomLocation(deathLocation, teleportRadius);
 
                             player.teleport(teleportLocation);
+                            player.sendMessage(getMessage("custom-effect.TeleportEffect.proc-message"));
                             ItemMetadata.updateDurability(player.getInventory().getItemInHand());
                             break;
                         }

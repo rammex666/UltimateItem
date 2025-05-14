@@ -7,6 +7,8 @@ import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import static fr.rammex.arkaitems.utils.Messages.getMessage;
+
 public class StealthEffect {
 
     private static final String STEALTH_TEAM_NAME = "stealth";
@@ -23,7 +25,7 @@ public class StealthEffect {
         team.addEntry(player.getName());
         player.setScoreboard(scoreboard);
 
-        player.sendMessage(ChatColor.GRAY + "Vous êtes maintenant en mode furtif.");
+        player.sendMessage(getMessage("custom-effect.StealthEffect.proc-message"));
     }
 
     public static void disableStealth(Player player) {
@@ -35,6 +37,6 @@ public class StealthEffect {
         }
 
         player.setScoreboard(scoreboard);
-        player.sendMessage(ChatColor.GRAY + "Vous n'êtes plus en mode furtif.");
+        player.sendMessage(getMessage("custom-effect.StealthEffect.end-message"));
     }
 }
