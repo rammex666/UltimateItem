@@ -1,10 +1,10 @@
 package fr.rammex.arkaitems.effects.custom;
 
+import fr.rammex.arkaitems.ArkaItems;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
 import fr.rammex.arkaitems.utils.ItemMetadata;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,7 +15,8 @@ import java.util.Random;
 
 public class TeleportEffect implements Listener {
 
-    private final int teleportRadius = 50;
+    private final int teleportRadius = ArkaItems.instance.getConfig().getInt("custom-effect.teleport.teleport-radius");
+    private final double teleportChance = ArkaItems.instance.getConfig().getDouble("custom-effect.teleport.proc");
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
@@ -29,7 +30,7 @@ public class TeleportEffect implements Listener {
                     Items customItem = ItemManager.getItemByName(getItemName(itemName));
                     if (customItem != null && customItem.getCustomsEffects() != null) {
                         Class<?> effectClass = customItem.getCustomsEffects().getEffectClass();
-                        if (effectClass != null && effectClass == TeleportEffect.class) {
+                        if (effectClass != null && effectClass == TeleportEffect.class && Math.random() < teleportChance) {
                             Location deathLocation = player.getLocation();
                             Location teleportLocation = getRandomLocation(deathLocation, teleportRadius);
 

@@ -1,5 +1,6 @@
 package fr.rammex.arkaitems.effects.custom;
 
+import fr.rammex.arkaitems.ArkaItems;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
 import fr.rammex.arkaitems.utils.ItemMetadata;
@@ -13,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class LifeStealEffect implements Listener {
 
-    private double lifeStealPercentage = 20.0; // Pourcentage de vie volée
+    private double lifeStealPercentage = ArkaItems.instance.getConfig().getDouble("custom-effect.life-steal.percentage");; // Pourcentage de vie volée
 
 
     @EventHandler

@@ -1,5 +1,6 @@
 package fr.rammex.arkaitems.effects.custom;
 
+import fr.rammex.arkaitems.ArkaItems;
 import fr.rammex.arkaitems.effects.CustomsEffects;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
@@ -17,9 +18,9 @@ import java.util.Random;
 
 public class MoneyStealEffect implements Listener {
 
-    private static final int MINIMUM_MONEY = 0;
-    private static final int MAXIMUM_MONEY = 100;
-    private static final int STEAL_CHANCE = 10; // Pourcentage de chance de déclencher l'effet
+    private static final int MINIMUM_MONEY = ArkaItems.instance.getConfig().getInt("custom-effect.money-steal.min");
+    private static final int MAXIMUM_MONEY = ArkaItems.instance.getConfig().getInt("custom-effect.money-steal.max");;
+    private static final double STEAL_CHANCE = ArkaItems.instance.getConfig().getDouble("custom-effect.money-steal.steal-chance"); // Pourcentage de chance de déclencher l'effet
 
     private final Random random = new Random();
 
@@ -36,7 +37,7 @@ public class MoneyStealEffect implements Listener {
             return;
         }
 
-        if (random.nextInt(100) < STEAL_CHANCE) {
+        if (random.nextDouble(100) < STEAL_CHANCE) {
             int stolenAmount = random.nextInt(MAXIMUM_MONEY - MINIMUM_MONEY + 1) + MINIMUM_MONEY;
 
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco take " + victim.getName() + " " + stolenAmount);

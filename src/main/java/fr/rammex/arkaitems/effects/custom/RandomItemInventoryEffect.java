@@ -1,5 +1,6 @@
 package fr.rammex.arkaitems.effects.custom;
 
+import fr.rammex.arkaitems.ArkaItems;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
 import org.bukkit.ChatColor;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class RandomItemInventoryEffect implements Listener {
 
-    private final double shuffleChance = 0.2;
+    private final double shuffleChance = ArkaItems.instance.getConfig().getDouble("custom-effect.random-item-iventory.proc");
 
     @EventHandler
     public void onPlayerHit(EntityDamageByEntityEvent event) {

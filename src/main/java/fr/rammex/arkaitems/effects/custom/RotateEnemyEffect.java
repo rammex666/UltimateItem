@@ -1,5 +1,6 @@
 package fr.rammex.arkaitems.effects.custom;
 
+import fr.rammex.arkaitems.ArkaItems;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
 import org.bukkit.ChatColor;
@@ -11,7 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class RotateEnemyEffect implements Listener {
-    private double rotateChance = 0.1; // 10% chance de rotate
+    private double rotateChance = ArkaItems.instance.getConfig().getDouble("custom-effect.rotate-enemy.proc");; // 10% chance de rotate
 
     @EventHandler
     public void onPlayerDamage(EntityDamageByEntityEvent event) {

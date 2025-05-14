@@ -1,5 +1,6 @@
 package fr.rammex.arkaitems.effects.custom;
 
+import fr.rammex.arkaitems.ArkaItems;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
 import fr.rammex.arkaitems.utils.ItemMetadata;
@@ -12,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class MaskFarmEffect implements Listener {
 
-    double PRICE_MULTIPLIER = 1.5;
+    double PRICE_MULTIPLIER = ArkaItems.instance.getConfig().getDouble("custom-effect.mask-farm.price-multiplier");;
 
     @EventHandler
     public void onShopPreTransaction(ShopPreTransactionEvent event) {

@@ -1,0 +1,18 @@
+custom-effect:
+  armor-dodge-effect:
+    proc: 0.1 # Probabilité de déclenchement de l'effet
+  life-steal:
+    percentage: 20.0 # Pourcentage de vie volé
+  mask-farm:
+    price-multiplier: 1.5 # Multiplicateur de prix pour le masque de ferme
+  money-steal:
+    min: 0 # Montant d'argent volé min
+    max: 100 # Montant d'argent volé max
+    steal-chance: 0.5 # Probabilité de vol d'argent
+  random-item-iventory:
+    proc : 0.2 # Probabilité de déclenchement de l'effet
+  rotate-enemy:
+    proc: 0.1 # Probabilité de déclenchement de l'effet
+  teleport:
+    teleport-radius: 10 # Rayon de téléportation
+    proc: 0.1 # Probabilité de déclenchement de l'effet
