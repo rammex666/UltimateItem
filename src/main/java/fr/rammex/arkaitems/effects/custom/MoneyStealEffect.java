@@ -3,6 +3,7 @@ package fr.rammex.arkaitems.effects.custom;
 import fr.rammex.arkaitems.effects.CustomsEffects;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
+import fr.rammex.arkaitems.utils.ItemMetadata;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -42,6 +43,7 @@ public class MoneyStealEffect implements Listener {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + attacker.getName() + " " + stolenAmount);
             attacker.sendMessage(ChatColor.GREEN + "Vous avez volé " + stolenAmount + " à " + victim.getName() + " !");
             victim.sendMessage(ChatColor.RED + "Vous avez perdu " + stolenAmount + " à cause de " + attacker.getName() + " !");
+            ItemMetadata.updateDurability(attacker.getInventory().getItemInHand());
         }
     }
 

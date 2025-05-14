@@ -40,6 +40,7 @@ public class SpawnerRemoverEffect implements Listener {
                             spawnerItem = ItemMetadata.setMetadata(spawnerItem, "EntityType", entityType);
 
                             event.getPlayer().getInventory().addItem(spawnerItem);
+                            ItemMetadata.updateDurability(event.getPlayer().getInventory().getItemInHand());
                         }
                     }
                 }

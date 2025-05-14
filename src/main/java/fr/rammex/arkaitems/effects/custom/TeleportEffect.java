@@ -2,6 +2,7 @@ package fr.rammex.arkaitems.effects.custom;
 
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
+import fr.rammex.arkaitems.utils.ItemMetadata;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -33,6 +34,7 @@ public class TeleportEffect implements Listener {
                             Location teleportLocation = getRandomLocation(deathLocation, teleportRadius);
 
                             player.teleport(teleportLocation);
+                            ItemMetadata.updateDurability(player.getInventory().getItemInHand());
                             break;
                         }
                     }

@@ -34,6 +34,7 @@ public class CutTreeEffect implements Listener {
                 if (effectClass != null && effectClass == CutTreeEffect.class) {
                     if (isLog(block.getType()) && isPartOfTree(block)) {
                         breakTree(block);
+                        ItemMetadata.updateDurability(itemInHand);
                     }
                 }
             }

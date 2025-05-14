@@ -2,6 +2,7 @@ package fr.rammex.arkaitems.effects.custom;
 
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
+import fr.rammex.arkaitems.utils.ItemMetadata;
 import net.brcdev.shopgui.event.ShopPreTransactionEvent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,6 +20,7 @@ public class MaskFarmEffect implements Listener {
             double price = event.getPrice();
             double newPrice = price * PRICE_MULTIPLIER;
             event.setPrice(newPrice);
+            ItemMetadata.updateDurability(event.getPlayer().getInventory().getHelmet());
         }
     }
 

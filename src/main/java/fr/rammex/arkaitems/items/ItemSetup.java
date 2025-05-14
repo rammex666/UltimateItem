@@ -62,8 +62,14 @@ public class ItemSetup {
             List<String> enchantsAssociated = itemsConf.getStringList("items." + key + ".Enchantments_Associated");
             if(itemsConf.get("items." + key + ".Commands_On_Event") != null) {
                 typesCommandsOnEvent = itemsConf.getStringList("items." + key + ".Commands_On_Event.type");
-                commandsOnYou = itemsConf.getStringList("items." + key + ".Commands_On_Event.commandsOnYou");
-                commandsOnEnemy = itemsConf.getStringList("items." + key + ".Commands_On_Event.commandsOnEnemy");
+                commandsOnYou = itemsConf.getStringList("items." + key + ".Commands_On_Event.CommandsOnYou");
+                commandsOnEnemy = itemsConf.getStringList("items." + key + ".Commands_On_Event.CommandsOnEnemy");
+                for (int i = 0; i < commandsOnYou.size(); i++) {
+                    commandsOnYou.set(i, commandsOnYou.get(i).replace("&", "§"));
+                }
+                for (int i = 0; i < commandsOnEnemy.size(); i++) {
+                    commandsOnEnemy.set(i, commandsOnEnemy.get(i).replace("&", "§"));
+                }
             } else {
                 typesCommandsOnEvent = null;
                 commandsOnYou = null;

@@ -17,10 +17,10 @@ public enum CustomsEffects {
     TPTOPLAYER("TeleportToPlayer", "Teleport to the player", TpToPlayerEffect.class),
     CHESTREADER("ChestReader", "Reads the chest", ChestReaderEffect.class),
     MASKFARM("MaskFarm", "Farms the mask", MaskFarmEffect.class),
-    REPAIRTOOL("RepairTool", "Repairs the tool", null),
-    ARMORDODGE("ArmorDodge", "Dodges the armor", null),
-    ROTATEENEMY("RotateEnemy", "Rotates the enemy", null),
-    RANDOMITEMINVENTORY("RandomItemInventory", "Gives a random item in the inventory", null);
+    REPAIRTOOL("RepairTool", "Repairs the tool", RepairToolEffect.class),
+    ARMORDODGE("ArmorDodge", "Dodges the armor", ArmorDodgeEffect.class),
+    ROTATEENEMY("RotateEnemy", "Rotates the enemy", RotateEnemyEffect.class),
+    RANDOMITEMINVENTORY("RandomItemInventory", "Gives a random item in the inventory", RandomItemInventoryEffect.class);
 
     private final String name;
     private final String description;

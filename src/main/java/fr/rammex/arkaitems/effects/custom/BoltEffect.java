@@ -27,6 +27,7 @@ public class BoltEffect implements Listener {
             Player damagedPlayer = (Player) event.getEntity();
             if (damagedPlayer.equals(summoner)) {
                 event.setCancelled(true);
+
             }
         }
     }

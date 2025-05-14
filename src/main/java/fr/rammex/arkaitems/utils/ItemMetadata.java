@@ -46,4 +46,14 @@ public class ItemMetadata {
             nmsItem.getTag().remove(key);
         }
     }
+
+    public static void updateDurability(org.bukkit.inventory.ItemStack item){
+        int Durability = Integer.valueOf(ItemMetadata.getMetadata(item, "Durability"));
+        if(Durability > 0) {
+            item = ItemMetadata.setMetadata(item, "Durability", String.valueOf(Durability-1));
+        } else if (Durability - 1 == 0 || Durability == 0) {
+            item.setAmount(0);
+        } else if (Durability == -1){
+        }
+    }
 }

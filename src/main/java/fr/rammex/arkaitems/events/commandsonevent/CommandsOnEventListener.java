@@ -33,7 +33,7 @@ public class CommandsOnEventListener implements Listener {
                     List<String> commandsOnEnemy = item.getCommandsOnEnemy();
 
                     for (String type : typesCommandOnEvent) {
-                        if (type.equalsIgnoreCase("onuse")) {
+                        if (type.toLowerCase().equals("onuse")) {
                             for (String command : commandsOnYou) {
                                 if (command != null && !command.isEmpty()) {
                                     decodeCommand(command, event.getPlayer());
@@ -70,9 +70,13 @@ public class CommandsOnEventListener implements Listener {
                         List<String> typesCommandOnEvent = item.getTypesCommandOnEvent();
                         List<String> commandsOnYou = item.getCommandsOnYou();
                         List<String> commandsOnEnemy = item.getCommandsOnEnemy();
+                        System.out.println(typesCommandOnEvent);
+                        System.out.println(commandsOnYou);
+                        System.out.println(commandsOnEnemy);
 
                         for (String type : typesCommandOnEvent) {
-                            if (type.equalsIgnoreCase("onhit")) {
+                            System.out.println(type);
+                            if (type.toLowerCase().equals("onhit")) {
                                 for (String command : commandsOnYou) {
                                     if (command != null && !command.isEmpty()) {
                                         decodeCommand(command, player);
@@ -82,6 +86,7 @@ public class CommandsOnEventListener implements Listener {
                                     Player target = (Player) event.getEntity();
                                     for (String command : commandsOnEnemy) {
                                         if (command != null && !command.isEmpty()) {
+                                            System.out.println("onHit 5");
                                             decodeCommand(command, target);
                                         }
                                     }
@@ -131,10 +136,8 @@ public class CommandsOnEventListener implements Listener {
         int randomValue = random.nextInt(100); // Génère un nombre entre 0 et 99
 
         if (randomValue < chance) {
-            System.out.println("Executing command: " + command);
-            action.run(); // Exécute l'action associée à la commande
+            action.run();
         } else {
-            System.out.println("Command not executed. Chance failed.");
         }
     }
 

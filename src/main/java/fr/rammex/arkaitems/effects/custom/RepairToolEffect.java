@@ -11,25 +11,35 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class TpToPlayerEffect implements Listener {
+public class RepairToolEffect implements Listener {
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event){
+    public void onItemUse(PlayerInteractEvent event) {
         if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK){
             Player player = event.getPlayer();
-            if(hasRequiredEffect(player)){
-                event.setCancelled(true);
-                Player nearestPlayer = getNearestPlayer(player);
-                if(nearestPlayer != null){
-                    player.teleport(nearestPlayer.getLocation());
-                    player.sendMessage("§aVous avez été téléporté vers " + nearestPlayer.getName());
-                    ItemMetadata.updateDurability(player.getInventory().getItemInHand());
-                } else {
-                    player.sendMessage("§cAucun joueur à proximité.");
+            if(hasRequiredEffect(player)) {
+                ItemStack playerHelmet = player.getInventory().getHelmet();
+                ItemStack playerChestplate = player.getInventory().getChestplate();
+                ItemStack playerLeggings = player.getInventory().getLeggings();
+                ItemStack playerBoots = player.getInventory().getBoots();
+                if(playerHelmet != null && playerHelmet.getType() != Material.AIR) {
+                    playerHelmet.setDurability((short) (playerHelmet.getDurability()+1));
                 }
+                if(playerChestplate != null && playerChestplate.getType() != Material.AIR) {
+                    playerChestplate.setDurability((short) (playerChestplate.getDurability()+1));
+                }
+                if(playerLeggings != null && playerLeggings.getType() != Material.AIR) {
+                    playerLeggings.setDurability((short) (playerLeggings.getDurability()+1));
+                }
+                if(playerBoots != null && playerBoots.getType() != Material.AIR) {
+                    playerBoots.setDurability((short) (playerBoots.getDurability()+1));
+                }
+                player.sendMessage("§aL'armure a été réparée de 1 point de durabilité.");
+                ItemMetadata.updateDurability(player.getInventory().getItemInHand());
             }
         }
     }
+
 
     private boolean hasRequiredEffect(Player player) {
         ItemStack itemInHand = player.getInventory().getItemInHand();
@@ -42,7 +52,7 @@ public class TpToPlayerEffect implements Listener {
             Items item = ItemManager.getItemByName(getItemName(itemName));
             if (item != null && item.getCustomsEffects() != null) {
                 Class<?> effectClass = item.getCustomsEffects().getEffectClass();
-                if (effectClass != null && effectClass == TpToPlayerEffect.class) {
+                if (effectClass != null && effectClass == RepairToolEffect.class) {
                     return true;
                 } else {
                     return false;
@@ -50,22 +60,6 @@ public class TpToPlayerEffect implements Listener {
             }
         }
         return false;
-    }
-
-    private Player getNearestPlayer(Player player) {
-        Player nearestPlayer = null;
-        double nearestDistance = 4.0;
-
-        for (Player onlinePlayer : player.getServer().getOnlinePlayers()) {
-            if (onlinePlayer != player) {
-                double distance = player.getLocation().distance(onlinePlayer.getLocation());
-                if (distance < nearestDistance) {
-                    nearestDistance = distance;
-                    nearestPlayer = onlinePlayer;
-                }
-            }
-        }
-        return nearestPlayer;
     }
 
     private String getItemName(String name) {

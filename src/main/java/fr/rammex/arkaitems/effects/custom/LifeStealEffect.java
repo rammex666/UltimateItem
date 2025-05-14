@@ -2,6 +2,7 @@ package fr.rammex.arkaitems.effects.custom;
 
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
+import fr.rammex.arkaitems.utils.ItemMetadata;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -28,21 +29,22 @@ public class LifeStealEffect implements Listener {
             return;
         }
         String itemName = itemInHand.getItemMeta().getDisplayName();
+        if (itemName == null || itemName.isEmpty()) {
+            return;
+        }
 
         if (isItemExistWithName(getItemName(itemName))) {
             Items item = ItemManager.getItemByName(getItemName(itemName));
             if (item != null && item.getCustomsEffects() != null) {
                 Class<?> effectClass = item.getCustomsEffects().getEffectClass();
                 if (effectClass != null && effectClass == LifeStealEffect.class) {
-                    // Vérifie si les dégâts sont valides
                     double damage = event.getDamage();
                     if (damage > 0) {
-                        // Calcule la vie volée
                         double lifeStealAmount = damage * (lifeStealPercentage / 100);
 
-                        // Ajoute la vie au joueur sans dépasser le maximum
                         double newHealth = Math.min(player.getHealth() + lifeStealAmount, player.getMaxHealth());
                         player.setHealth(newHealth);
+                        ItemMetadata.updateDurability(player.getInventory().getItemInHand());
                     }
                 }
             }

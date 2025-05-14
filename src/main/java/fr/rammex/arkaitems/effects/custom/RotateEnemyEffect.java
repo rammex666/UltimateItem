@@ -2,28 +2,29 @@ package fr.rammex.arkaitems.effects.custom;
 
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.Items;
-import fr.rammex.arkaitems.utils.ItemMetadata;
-import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class ChestReaderEffect implements Listener {
+public class RotateEnemyEffect implements Listener {
+    private double rotateChance = 0.1; // 10% chance de rotate
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        if(event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.CHEST) {
-            Chest chest = (Chest) event.getClickedBlock().getState();
+    public void onPlayerDamage(EntityDamageByEntityEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getDamager();
+            Player victim = (Player) event.getEntity();
+
             if (hasRequiredEffect(player)) {
-                event.setCancelled(true);
-                ItemMetadata.updateDurability(player.getInventory().getItemInHand());
-                readChest(chest, player);
+                if (Math.random() < rotateChance) {
+                    event.setCancelled(true);
+                    victim.sendMessage(ChatColor.GREEN + "You have been rotated!");
+                    victim.setVelocity(player.getLocation().getDirection().multiply(-1)); // Rotate the victim
+                }
             }
         }
     }
@@ -39,7 +40,7 @@ public class ChestReaderEffect implements Listener {
             Items item = ItemManager.getItemByName(getItemName(itemName));
             if (item != null && item.getCustomsEffects() != null) {
                 Class<?> effectClass = item.getCustomsEffects().getEffectClass();
-                if (effectClass != null && effectClass == ChestReaderEffect.class) {
+                if (effectClass != null && effectClass == RotateEnemyEffect.class) {
                     return true;
                 } else {
                     return false;
@@ -58,13 +59,5 @@ public class ChestReaderEffect implements Listener {
         } else {
             return false;
         }
-    }
-
-
-    private void readChest(Chest chest, Player player) {
-        int chestSize = chest.getInventory().getSize();
-        Inventory chestReader = Bukkit.createInventory(null, chestSize, "Chest Reader");
-        chestReader.setContents(chest.getInventory().getContents());
-        player.openInventory(chestReader);
     }
 }

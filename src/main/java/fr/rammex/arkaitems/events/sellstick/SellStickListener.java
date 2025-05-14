@@ -32,16 +32,12 @@ public class SellStickListener implements Listener {
                 Player player = event.getPlayer();
                 ChestSellManager.sellChestContents(player, chest, sellAmount);
                 int sellStickDurability = Integer.valueOf(ItemMetadata.getMetadata(event.getItem(), "Durability"));
-                System.out.println("Durability: " + sellStickDurability);
                 if (sellStickDurability > 0) {
-                    System.out.println("Durability > 0");
                     SellStick sellStick = SellStickManager.getSellStickByName(getSellStickName(event.getItem().getItemMeta().getDisplayName()));
                     updateSellStick(player, sellStick, ItemMetadata.getMetadata(event.getItem(), "ID"), sellStickDurability);
                 } else if (sellStickDurability - 1 == 0 || sellStickDurability == 0) {
-                    System.out.println("Durability: 0 destroying item");
                     event.getPlayer().getInventory().setItem(event.getPlayer().getInventory().getHeldItemSlot(), null);
                 } else if (sellStickDurability == -1){
-                    System.out.println("Durability: -1");
                 }
             } else {
                 return;

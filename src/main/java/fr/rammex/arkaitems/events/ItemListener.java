@@ -15,20 +15,26 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ItemListener implements Listener {
+
+    private final Map<Player, List<ItemStack>> itemsToReturn = new HashMap<>();
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event){
         if (event.getItemDrop().getItemStack().hasItemMeta()) {
             String itemName = event.getItemDrop().getItemStack().getItemMeta().getDisplayName();
-            if(checkDropable(getItemName(itemName))){
+            if(!checkDropable(getItemName(itemName))){
                 event.setCancelled(true);
             }
         }
@@ -36,35 +42,52 @@ public class ItemListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getSlotType() == InventoryType.SlotType.ARMOR) {
-            ItemStack currentItem = event.getCurrentItem();
-            ItemStack cursorItem = event.getCursor();
+        if (!(event.getWhoClicked() instanceof Player)) {
+            return;
+        }
 
-            // armure +
+        Player player = (Player) event.getWhoClicked();
+        ItemStack currentItem = event.getCurrentItem();
+        ItemStack cursorItem = event.getCursor();
+
+        if (event.isShiftClick() && currentItem != null && currentItem.hasItemMeta()) {
+            String itemName = currentItem.getItemMeta().getDisplayName();
+            if (isItemExistWithName(getItemName(itemName))) {
+                Items item = ItemManager.getItemByName(getItemName(itemName));
+                List<String> effectsOnEquip = item.getEnchantsOnEquip();
+                if (effectsOnEquip != null) {
+                    applyPotionEffectsFromConfig(player, effectsOnEquip);
+                }
+            }
+        }
+
+        if (event.getSlotType() == InventoryType.SlotType.ARMOR) {
+            // Adding armor
             if (cursorItem != null && cursorItem.hasItemMeta()) {
                 String itemName = cursorItem.getItemMeta().getDisplayName();
-                if(isItemExistWithName(getItemName(itemName))) {
+                if (isItemExistWithName(getItemName(itemName))) {
                     Items item = ItemManager.getItemByName(getItemName(itemName));
                     List<String> effectsOnEquip = item.getEnchantsOnEquip();
                     if (effectsOnEquip != null) {
-                        applyPotionEffectsFromConfig((Player) event.getWhoClicked(), effectsOnEquip);
+                        applyPotionEffectsFromConfig(player, effectsOnEquip);
                     }
                 }
             }
 
-            // armure -
             if (currentItem != null && currentItem.hasItemMeta()) {
                 String itemName = currentItem.getItemMeta().getDisplayName();
-                if(isItemExistWithName(getItemName(itemName))) {
+                if (isItemExistWithName(getItemName(itemName))) {
                     Items item = ItemManager.getItemByName(getItemName(itemName));
                     List<String> effectsOnEquip = item.getEnchantsOnEquip();
                     if (effectsOnEquip != null) {
-                        removePotionEffectsFromConfig((Player) event.getWhoClicked(), effectsOnEquip);
+                        removePotionEffectsFromConfig(player, effectsOnEquip);
                     }
                 }
             }
         }
     }
+
+
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
@@ -73,18 +96,33 @@ public class ItemListener implements Listener {
         if (drops == null || drops.isEmpty()) {
             return;
         }
+
+        List<ItemStack> itemsToKeep = new ArrayList<>();
         for (ItemStack item : drops) {
-            String itemName = item.getItemMeta().getDisplayName();
-            if(itemName == null){
-                continue;
+            if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
+                String itemName = item.getItemMeta().getDisplayName();
+                if (checkKeepOnDeath(getItemName(itemName))) {
+                    itemsToKeep.add(item);
+                }
             }
-            if (checkKeepOnDeath(getItemName(itemName))) {
-                event.getDrops().remove(item);
+        }
+
+        drops.removeAll(itemsToKeep);
+        itemsToReturn.put(player, itemsToKeep);
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        if (itemsToReturn.containsKey(player)) {
+            List<ItemStack> items = itemsToReturn.remove(player);
+            for (ItemStack item : items) {
                 player.getInventory().addItem(item);
-                player.sendMessage("§cVous avez perdu votre " + itemName + " mais il a été ajouté à votre inventaire.");
+                player.sendMessage("§cVous avez récupéré votre " + item.getItemMeta().getDisplayName() + " après votre mort.");
             }
         }
     }
+
 
     @EventHandler
     public void onDurabilityChange(PlayerItemDamageEvent event){
@@ -92,7 +130,6 @@ public class ItemListener implements Listener {
             String itemName = event.getItem().getItemMeta().getDisplayName();
             if (checkIsIndestructible(getItemName(itemName))) {
                     event.setCancelled(true);
-                    event.getPlayer().sendMessage("§cCet item est indestructible.");
             }
         }
     }
