@@ -22,6 +22,9 @@ public class SellStickListener implements Listener {
             return;
         }
         if (event.getClickedBlock() != null && event.getClickedBlock().getState() instanceof Chest) {
+            if (event.getItem().getItemMeta() == null || !event.getItem().getItemMeta().hasDisplayName()) {
+                return;
+            }
             if (isSellStickExistWithName(getSellStickName(event.getItem().getItemMeta().getDisplayName()))) {
                 event.setCancelled(true);
                 Double sellAmount = Double.valueOf(ItemMetadata.getMetadata(event.getItem(), "Multiplier"));

@@ -81,6 +81,7 @@ public class ItemSetup {
                 commandsOnEnemy = null;
             }
 
+            System.out.println("Adding item: " + id + " with material: " + material + ", custom effect: " + customEffect + ", amount: " + amount + ", durability: " + durability);
             Items item = new Items(id, name, material, customEffect, amount, durability, dropable, keepOnDeath, dropPlayerHead, indestructible, lore, enchantsOnEquip, enchantsAssociated, typesCommandsOnEvent, commandsOnYou, commandsOnEnemy);
             ItemManager.addItem(item);
         }

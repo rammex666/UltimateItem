@@ -25,9 +25,11 @@ public class RandomItemInventoryEffect implements Listener {
     @EventHandler
     public void onPlayerHit(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
+            System.out.println(ChatColor.GREEN + "RandomItemInventoryEffect triggered for " + event.getDamager().getName() + " on " + event.getEntity().getName());
             Player damager = (Player) event.getDamager();
             Player victim = (Player) event.getEntity();
             if(hasRequiredEffect(damager)) {
+                System.out.println(ChatColor.GREEN + "RandomItemInventoryEffect triggered for " + damager.getName() + " on " + victim.getName());
                 if (Math.random() < shuffleChance) {
                     shuffleInventory(victim);
                     damager.sendMessage(getMessage("custom-effect.RandomItemInventoryEffect.proc-message").replace("{player}", victim.getName()));

@@ -1,5 +1,6 @@
 package fr.rammex.arkaitems;
 
+
 import fr.rammex.arkaitems.commands.ItemCommand;
 import fr.rammex.arkaitems.commands.ItemCraftCommand;
 import fr.rammex.arkaitems.craft.CraftManager;
@@ -29,6 +30,7 @@ import fr.rammex.arkaitems.utils.YamlFiles;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.Optional;
 
 
 public final class ArkaItems extends JavaPlugin {
@@ -94,7 +96,7 @@ public final class ArkaItems extends JavaPlugin {
     }
 
     private void loadCommands(){
-        getCommand("arkaitems").setExecutor(new ItemCommand());
+        getCommand("arkaitem").setExecutor(new ItemCommand());
         getCommand("itemcraft").setExecutor(new ItemCraftCommand());
     }
 

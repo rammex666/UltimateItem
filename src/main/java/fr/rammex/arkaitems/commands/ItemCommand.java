@@ -1,11 +1,14 @@
 package fr.rammex.arkaitems.commands;
 
 import fr.rammex.arkaitems.ArkaItems;
-import fr.rammex.arkaitems.database.ItemMetaDataManager;
 import fr.rammex.arkaitems.gui.ItemsGUI;
 import fr.rammex.arkaitems.items.ItemManager;
 import fr.rammex.arkaitems.items.ItemSetup;
+import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlockSetup;
+import fr.rammex.arkaitems.items.specialitems.pickaxemultiblock.PickaxeMultiBlockSetup;
 import fr.rammex.arkaitems.utils.ItemMetadata;
+import fr.rammex.arkaitems.utils.YamlFiles;
+import me.albert.skullapi.SkullAPI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemCommand implements CommandExecutor {
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
         if(args.length == 0){
@@ -73,7 +77,10 @@ public class ItemCommand implements CommandExecutor {
     }
 
     private void reload(){
+        YamlFiles.loadFiles();
         ArkaItems.instance.reloadConfig();
+        AutoPlaceBlockSetup.setupItems();
+        PickaxeMultiBlockSetup.setupItems();
         ItemSetup.setupItems();
     }
 

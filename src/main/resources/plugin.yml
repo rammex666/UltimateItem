@@ -6,7 +6,7 @@ depend:
   - Factions
   - ProtocolLib
 commands:
-  arkaitems:
+  arkaitem:
     description: Commande principale du plugin ArkaItems
   itemcraft:
     description: Commande pour créer un item

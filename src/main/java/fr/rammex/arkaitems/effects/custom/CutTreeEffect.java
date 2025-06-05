@@ -26,6 +26,9 @@ public class CutTreeEffect implements Listener {
             return;
         }
         String itemName = itemInHand.getItemMeta().getDisplayName();
+        if(itemName == null || itemName.isEmpty()) {
+            return;
+        }
 
         if (isItemExistWithName(getItemName(itemName))) {
             Items item = ItemManager.getItemByName(getItemName(itemName));

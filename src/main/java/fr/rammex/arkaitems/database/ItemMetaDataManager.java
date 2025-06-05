@@ -58,7 +58,6 @@ public class ItemMetaDataManager {
             try (PreparedStatement ps = connection.prepareStatement(query)) {
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        System.out.println(rs.getInt("count"));
                         return String.valueOf(rs.getInt("count") + 1);
                     }
                 }

@@ -35,6 +35,10 @@ public class ChestReaderEffect implements Listener {
         }
         String itemName = itemInHand.getItemMeta().getDisplayName();
 
+        if(itemName == null || itemName.isEmpty()) {
+            return false;
+        }
+
         if (isItemExistWithName(getItemName(itemName))) {
             Items item = ItemManager.getItemByName(getItemName(itemName));
             if (item != null && item.getCustomsEffects() != null) {

@@ -5,6 +5,7 @@ import fr.rammex.arkaitems.items.Items;
 import fr.rammex.arkaitems.items.specialitems.autoplaceblock.AutoPlaceBlockManager;
 import fr.rammex.arkaitems.items.specialitems.pickaxemultiblock.PickaxeMultiBlockManager;
 import fr.rammex.arkaitems.items.specialitems.sellstick.SellStickManager;
+import me.albert.skullapi.SkullAPI;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
@@ -17,6 +18,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -144,11 +146,10 @@ public class ItemListener implements Listener {
                 if (isItemExistWithName(getItemName(itemName))) {
                     Items item = ItemManager.getItemByName(getItemName(itemName));
                     if(item.isDropPlayerHead()){
-                        ItemStack skull = new ItemStack(Material.LEGACY_SKULL, 1, (short) SkullType.PLAYER.ordinal());
-                        SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
+                        ItemStack skull = SkullAPI.getSkull(player.getName());
+                        ItemMeta skullMeta = skull.getItemMeta();
 
                         if (skullMeta != null) {
-                            skullMeta.setOwningPlayer(player); // Associer la tête au joueur tué
                             skullMeta.setDisplayName("Tête de " + player.getName()); // Nom personnalisé
                             skull.setItemMeta(skullMeta);
                         }
