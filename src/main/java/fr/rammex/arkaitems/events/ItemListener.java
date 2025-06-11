@@ -55,10 +55,12 @@ public class ItemListener implements Listener {
         if (event.isShiftClick() && currentItem != null && currentItem.hasItemMeta()) {
             String itemName = currentItem.getItemMeta().getDisplayName();
             if (isItemExistWithName(getItemName(itemName))) {
-                Items item = ItemManager.getItemByName(getItemName(itemName));
-                List<String> effectsOnEquip = item.getEnchantsOnEquip();
-                if (effectsOnEquip != null) {
-                    applyPotionEffectsFromConfig(player, effectsOnEquip);
+                if (event.getSlotType() == InventoryType.SlotType.ARMOR) {
+                    Items item = ItemManager.getItemByName(getItemName(itemName));
+                    List<String> effectsOnEquip = item.getEnchantsOnEquip();
+                    if (effectsOnEquip != null) {
+                        applyPotionEffectsFromConfig(player, effectsOnEquip);
+                    }
                 }
             }
         }

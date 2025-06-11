@@ -87,7 +87,7 @@ public class CustomCraftGUI implements Listener {
             // Gérer le clic sur l'emplacement du résultat
             int clickedSlot = event.getSlot();
 
-            // Attendre un tick avant de vérifier la recette SINON CAPTE PAS
+            // Vérifier si un item est retiré ou ajouté
             waitOneTick(() -> {
                 List<String> recipe = new ArrayList<>();
 
@@ -100,7 +100,7 @@ public class CustomCraftGUI implements Listener {
                             recipe.add("AIR");
                         } else {
                             // Vérifie si c'est un Items personnalisé
-                            if(item.getItemMeta() != null && item.getItemMeta().hasDisplayName()) {
+                            if (item.getItemMeta() != null && item.getItemMeta().hasDisplayName()) {
                                 String itemName = item.getItemMeta().getDisplayName();
                                 Items customItem = ItemManager.getItemByName(getItemName(itemName));
                                 if (customItem != null) {
@@ -118,14 +118,19 @@ public class CustomCraftGUI implements Listener {
                 // Vérification stricte de la recette
                 Craft matchingCraft = CraftManager.getCraftByRecipie(recipe, (Player) event.getWhoClicked());
                 Player player = (Player) event.getWhoClicked();
-                if (matchingCraft != null && matchingCraft.getRecipe().equals(recipe)) {
+
+                // Si la recette ne correspond plus, retirer l'item du slot résultat
+                if (matchingCraft == null || !matchingCraft.getRecipe().equals(recipe)) {
+                    event.getClickedInventory().setItem(resultSlot, null);
+                    craftSuccess = false;
+                } else if (clickedSlot != resultSlot) {
+                    // Si un item est ajouté ou retiré, recalculer le résultat
                     Items resultItem = ItemManager.getItemById(matchingCraft.getItemId());
                     if (resultItem != null) {
                         ItemStack result = ItemManager.createItem(player, matchingCraft.getItemId(), 1);
                         if (result != null) {
                             event.getClickedInventory().setItem(resultSlot, result);
                             craftSuccess = true;
-                        } else {
                         }
                     }
                 }
@@ -140,7 +145,7 @@ public class CustomCraftGUI implements Listener {
                     return;
                 }
 
-                if(event.getClickedInventory().getItem(resultSlot) != null && craftSuccess){
+                if (event.getClickedInventory().getItem(resultSlot) != null && craftSuccess) {
                     for (int row = 0; row < size; row++) {
                         for (int col = 0; col < size; col++) {
                             int craftSlot = (startRow + row) * 9 + (startCol + col);
@@ -149,7 +154,7 @@ public class CustomCraftGUI implements Listener {
                     }
 
                     Player player = (Player) event.getWhoClicked();
-                    player.updateInventory();// Réinitialiser la grille de craft
+                    player.updateInventory(); // Réinitialiser la grille de craft
 
                     String itemName = event.getClickedInventory().getItem(resultSlot).getItemMeta().getDisplayName();
 
@@ -166,7 +171,6 @@ public class CustomCraftGUI implements Listener {
             }
         }
     }
-
     private String getItemName(String name) {
         return name.replace("§", "&");
     }
