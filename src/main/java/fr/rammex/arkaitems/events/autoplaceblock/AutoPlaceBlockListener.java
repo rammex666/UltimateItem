@@ -17,6 +17,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import static fr.rammex.arkaitems.utils.TimesTask.waitOneTick;
+
 public class AutoPlaceBlockListener implements Listener {
 
     @EventHandler
@@ -32,7 +34,7 @@ public class AutoPlaceBlockListener implements Listener {
                     int amount = autoPlaceBlock.getTo() - autoPlaceBlock.getFrom();
                     if(player.getInventory().contains(material, amount)){
                         player.getInventory().removeItem(new ItemStack(material, amount));
-                        placeBlock(player, autoPlaceBlock, event.getBlockPlaced().getLocation());
+                        waitOneTick(() -> placeBlock(player, autoPlaceBlock, event.getBlockPlaced().getLocation()));
                         if (autoPlaceBlock != null) {
                             int autoPlaceBlockDurability = Integer.valueOf(autoPlaceBlock.getDurability());
                             if (autoPlaceBlockDurability > 0) {
@@ -96,6 +98,10 @@ public class AutoPlaceBlockListener implements Listener {
         Material material = autoPlaceBlock.getBlockTypeFromInventory();
 
         if (material != null) {
+            if (!checkFaction(player, baseLocation)) {
+                waitOneTick(() -> baseLocation.getBlock().setType(material));
+            }
+
             float yaw = player.getLocation().getYaw();
             String cardinalDirection = getCardinalDirection(yaw);
 
