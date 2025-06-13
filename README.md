@@ -10,7 +10,7 @@
 |----------|-------------|
 | `/arkaitem reload` | Recharge la configuration du plugin |
 | `/arkaitem give <joueur> <item>` | Donne un item configuré à un joueur |
-| `/arkaitem menu` | Ouvre le menu de gestion des items personnalisés |
+| `/arkaitem menu` | Ouvre le menu de gestion des items |
 
 ---
 
