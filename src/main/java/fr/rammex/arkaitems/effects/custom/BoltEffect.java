@@ -19,8 +19,7 @@ public class BoltEffect implements Listener {
         summoner = player;
         Location playerLocation = player.getLocation();
 
-        LightningStrike lightning = player.getWorld().strikeLightning(playerLocation);
-        lightning.setFireTicks(0);
+        LightningStrike lightning = player.getWorld().strikeLightningEffect(playerLocation);
     }
 
     @EventHandler
