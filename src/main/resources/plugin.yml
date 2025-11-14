@@ -1,12 +1,12 @@
-name: ArkaItems
+name: UltimateItem
 version: '${project.version}'
-main: fr.rammex.arkaitems.ArkaItems
+main: fr.rammex.ultimateitem.UltimateItem
 depend:
   - ShopGUIPlus
   - Factions
   - ProtocolLib
 commands:
-  arkaitem:
-    description: Commande principale du plugin ArkaItems
+  ultimateitem:
+    description: Commande principale du plugin UltimateItem
   itemcraft:
     description: Commande pour créer un item

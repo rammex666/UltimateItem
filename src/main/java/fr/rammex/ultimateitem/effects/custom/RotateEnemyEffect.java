@@ -1,0 +1,66 @@
+package fr.rammex.ultimateitem.effects.custom;
+
+import fr.rammex.ultimateitem.UltimateItem;
+import fr.rammex.ultimateitem.items.ItemManager;
+import fr.rammex.ultimateitem.items.Items;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
+
+import static fr.rammex.ultimateitem.utils.Messages.getMessage;
+
+public class RotateEnemyEffect implements Listener {
+    private double rotateChance = UltimateItem.instance.getConfig().getDouble("custom-effect.rotate-enemy.proc");; // 10% chance de rotate
+
+    @EventHandler
+    public void onPlayerDamage(EntityDamageByEntityEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getDamager();
+            Player victim = (Player) event.getEntity();
+
+            if (hasRequiredEffect(player)) {
+                if (Math.random() < rotateChance) {
+                    event.setCancelled(true);
+                    player.sendMessage(getMessage("custom-effect.RotateEnemyEffect.proc-message"));
+                    victim.sendMessage(getMessage("custom-effect.RepaireEffect.rotated-message").replace("{player}", player.getName()));
+                    victim.setVelocity(player.getLocation().getDirection().multiply(-1)); // Rotate the victim
+                }
+            }
+        }
+    }
+
+    private boolean hasRequiredEffect(Player player) {
+        ItemStack itemInHand = player.getInventory().getItemInHand();
+        if(itemInHand == null || itemInHand.getType() == Material.AIR) {
+            return false;
+        }
+        String itemName = itemInHand.getItemMeta().getDisplayName();
+
+        if (isItemExistWithName(getItemName(itemName))) {
+            Items item = ItemManager.getItemByName(getItemName(itemName));
+            if (item != null && item.getCustomsEffects() != null) {
+                Class<?> effectClass = item.getCustomsEffects().getEffectClass();
+                if (effectClass != null && effectClass == RotateEnemyEffect.class) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    private String getItemName(String name) {
+        return name.replace("§", "&");
+    }
+    private boolean isItemExistWithName(String name) {
+        if (ItemManager.getItemByName(name) != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
